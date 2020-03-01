@@ -1,6 +1,27 @@
 # Dog
 
+[![Build Status](https://travis-ci.com/Anilople/Dog.svg?branch=master)](https://travis-ci.com/Anilople/Dog)
+
 Dog 编程语言，年轻人的第一门自制编程语言
+
+## 快速尝试运行
+
+从[releases](https://github.com/Anilople/Dog/releases)中下载最新发行版本，解压后。
+
+你只需要关心2个文件：
+
+* `dog-xxx.jar`：Java包，提供了Dog语言的解释器。
+* ``HelloWorld.dog`：Dog语言的代码
+
+在这2个文件的同路径下打开终端，运行
+
+```shell
+java -jar dog-xxx.jar HelloWorld.dog
+```
+
+即可开始了第一步。
+
+后续在这个文件上进行修改即可。
 
 ## Tutorial
 
