@@ -96,7 +96,22 @@ public class Context {
         if(!exists(variableName)) {
             throw new RuntimeException(variableName + "未定义");
         }
-        return unmodifiableTable.get(variableName);
+        // 先从不可变区域找
+        LambdaExpression unmodifiableValue = unmodifiableTable.get(variableName);
+        if(null != unmodifiableValue) {
+            // 找到了
+            return unmodifiableValue;
+        }
+
+        // 从可变区域找
+        LambdaExpression temporaryValue = temporaryTable.get(variableName);
+        if(null != temporaryValue) {
+            // 找到了
+            return temporaryValue;
+        }
+
+        // 无法找到
+        throw new IllegalStateException("未定义" + variableName);
     }
 
 }
