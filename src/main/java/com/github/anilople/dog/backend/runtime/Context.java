@@ -16,14 +16,21 @@ public class Context {
      * {@link VariableName}和{@link LambdaExpression}绑定的记录表
      * 一旦添加，后续不可变
      */
-    private final Map<VariableName, LambdaExpression> table = new ConcurrentHashMap<>();
+    private final Map<VariableName, LambdaExpression> unmodifiableTable = new ConcurrentHashMap<>();
 
+    /**
+     * 临时{@link VariableName}和{@link LambdaExpression}绑定的记录表
+     * 添加后，可以被覆盖
+     */
+    private final Map<VariableName, LambdaExpression> temporaryTable = new ConcurrentHashMap<>();
+    
     Context() {
 
     }
 
     Context(Context context) {
-        this.table.putAll(context.table);
+        // 仅仅会复制不可变的表
+        this.unmodifiableTable.putAll(context.unmodifiableTable);
     }
 
     /**
@@ -40,7 +47,8 @@ public class Context {
      * @return 变量是否存在绑定
      */
     public boolean exists(VariableName variableName) {
-        return table.containsKey(variableName);
+        return unmodifiableTable.containsKey(variableName)
+                || temporaryTable.containsKey(variableName);
     }
 
     /**
@@ -50,10 +58,10 @@ public class Context {
      */
     void addUnmodifiable(VariableName unmodifiableVariable, LambdaExpression lambdaExpression) {
         if(exists(unmodifiableVariable)) {
-            throw new IllegalStateException(unmodifiableVariable + "已经绑定了" + table.get(unmodifiableVariable));
+            throw new IllegalStateException(unmodifiableVariable + "已经绑定了" + unmodifiableTable.get(unmodifiableVariable));
         }
         // 添加绑定
-        table.put(unmodifiableVariable, lambdaExpression);
+        unmodifiableTable.put(unmodifiableVariable, lambdaExpression);
     }
 
     /**
@@ -62,7 +70,7 @@ public class Context {
      * @param lambdaExpression 对应的{@link LambdaExpression}
      */
     void addTemporary(VariableName modifiableVariable, LambdaExpression lambdaExpression) {
-        table.put(modifiableVariable, lambdaExpression);
+        temporaryTable.put(modifiableVariable, lambdaExpression);
     }
 
     /**
@@ -86,9 +94,9 @@ public class Context {
      */
     public LambdaExpression get(VariableName variableName) {
         if(!exists(variableName)) {
-            throw new RuntimeException(variableName + "没有定义在" + table);
+            throw new RuntimeException(variableName + "未定义");
         }
-        return table.get(variableName);
+        return unmodifiableTable.get(variableName);
     }
 
 }

@@ -7,30 +7,30 @@ import com.github.anilople.dog.backend.runtime.AbstractRuntimeFunction;
 import com.github.anilople.dog.backend.runtime.Context;
 
 /**
- * 输出一行，额外附加换行符
- * 参考{@link java.io.PrintStream#println(String)}
+ * 无换行符，
+ * 直接输出
  */
-public class PrintLine extends AbstractRuntimeFunction {
+public class Print extends AbstractRuntimeFunction {
 
-    private static final PrintLine PRINT_LINE = new PrintLine(null, null);
+    private static final Print PRINT = new Print(null, null);
 
-    public static final PrintLine getInstance() {
-        return PRINT_LINE;
+    public static final Print getInstance() {
+        return PRINT;
     }
 
-    private PrintLine(Name argument, LambdaExpression body) {
+    private Print(Name argument, LambdaExpression body) {
         super(argument, body);
     }
 
     @Override
     public LambdaExpression call(LambdaExpression replacement, Context context) {
         LambdaExpression lambdaExpression = Evaluation.execute(replacement, context);
-        System.out.println(lambdaExpression);
+        System.out.print(lambdaExpression);
         return this;
     }
 
     @Override
     public String toString() {
-        return "x -> { PrintLine[x] }";
+        return "x -> { Print[x] }";
     }
 }

@@ -3,6 +3,8 @@ package com.github.anilople.dog.backend.runtime;
 import com.github.anilople.dog.backend.ast.VariableName;
 import com.github.anilople.dog.backend.runtime.metafunction.Bind;
 import com.github.anilople.dog.backend.runtime.metafunction.input.InputLine;
+import com.github.anilople.dog.backend.runtime.metafunction.operations.Add;
+import com.github.anilople.dog.backend.runtime.metafunction.output.Print;
 import com.github.anilople.dog.backend.runtime.metafunction.output.PrintLine;
 
 /**
@@ -18,11 +20,24 @@ public class MetaContextEnvironment {
         return new Context(CONTEXT);
     }
 
+    /**
+     * meta 绑定
+     */
     static {
-        // meta 绑定
-        CONTEXT.addUnmodifiable(new VariableName(PrintLine.class.getSimpleName()), PrintLine.getInstance());
+        // 绑定，定义变量
         CONTEXT.addUnmodifiable(new VariableName(Bind.class.getSimpleName()), Bind.getInstance());
+
+        // 输出
+        CONTEXT.addUnmodifiable(new VariableName(PrintLine.class.getSimpleName()), PrintLine.getInstance());
+        CONTEXT.addUnmodifiable(new VariableName(Print.class.getSimpleName()), Print.getInstance());
+
+        // 输入
         CONTEXT.addUnmodifiable(new VariableName(InputLine.class.getSimpleName()), InputLine.getInstance());
+
+        // 算术
+        // 加法 +
+        CONTEXT.addUnmodifiable(new VariableName(Add.class.getSimpleName()), Add.getInstance());
+        CONTEXT.addUnmodifiable(new VariableName("+"), Add.getInstance());
     }
 
 }
