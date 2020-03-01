@@ -3,7 +3,7 @@ package com.github.anilople.dog.backend.runtime;
 import com.github.anilople.dog.backend.ast.VariableName;
 import com.github.anilople.dog.backend.runtime.metafunction.Bind;
 import com.github.anilople.dog.backend.runtime.metafunction.input.InputLine;
-import com.github.anilople.dog.backend.runtime.metafunction.operations.Add;
+import com.github.anilople.dog.backend.runtime.metafunction.operations.*;
 import com.github.anilople.dog.backend.runtime.metafunction.output.Print;
 import com.github.anilople.dog.backend.runtime.metafunction.output.PrintLine;
 
@@ -38,6 +38,18 @@ public class MetaContextEnvironment {
         // 加法 +
         CONTEXT.addUnmodifiable(new VariableName(Add.class.getSimpleName()), Add.getInstance());
         CONTEXT.addUnmodifiable(new VariableName("+"), Add.getInstance());
+        // 减法 -
+        CONTEXT.addUnmodifiable(new VariableName(Sub.class.getSimpleName()), Sub.getInstance());
+        CONTEXT.addUnmodifiable(new VariableName("-"), Sub.getInstance());
+        // 乘法 *
+        CONTEXT.addUnmodifiable(new VariableName(Mul.class.getSimpleName()), Mul.getInstance());
+        CONTEXT.addUnmodifiable(new VariableName("*"), Mul.getInstance());
+        // 除法 /
+        CONTEXT.addUnmodifiable(new VariableName(Div.class.getSimpleName()), Div.getInstance());
+        CONTEXT.addUnmodifiable(new VariableName("/"), Div.getInstance());
+        // 取模 %
+        CONTEXT.addUnmodifiable(new VariableName(Mod.class.getSimpleName()), Mod.getInstance());
+        CONTEXT.addUnmodifiable(new VariableName("%"), Mod.getInstance());
     }
 
 }
