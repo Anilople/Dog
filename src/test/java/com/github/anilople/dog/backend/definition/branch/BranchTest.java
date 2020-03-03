@@ -15,7 +15,7 @@ class BranchTest {
 
     @Test
     void ifTest() {
-        LambdaExpression lambdaExpression = ApplicationUtil.generateApplicationFromLeft(
+        LambdaExpression lambdaExpression = ApplicationUtil.generateApplicationRightMost(
                 IF, new Application(TypeConverter.IS_ZERO, Numbers.TWO),
                 Numbers.ONE,
                 Numbers.TWO

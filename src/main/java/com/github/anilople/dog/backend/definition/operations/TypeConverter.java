@@ -16,7 +16,7 @@ public class TypeConverter {
      */
     public static final Function IS_ZERO = new Function(
             N,
-            ApplicationUtil.generateApplicationFromLeft(
+            ApplicationUtil.generateApplicationRightMost(
                     N,
                     new Function(X, FALSE),
                     TRUE
@@ -28,7 +28,7 @@ public class TypeConverter {
      */
     public static final Function IS_NOT_ZERO = new Function(
             N,
-            ApplicationUtil.generateApplicationFromRight(
+            ApplicationUtil.generateApplicationLeftMost(
                     Logical.NOT,
                     IS_ZERO,
                     N
@@ -41,7 +41,7 @@ public class TypeConverter {
      */
     public static final Function IS_BIGGER_THAN_ZERO = new Function(
             N,
-            ApplicationUtil.generateApplicationFromLeft(
+            ApplicationUtil.generateApplicationRightMost(
                     N,
                     new Function(X, TRUE),
                     FALSE

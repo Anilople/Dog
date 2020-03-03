@@ -24,7 +24,7 @@ public class Branch {
      * \fxy.fxy
      */
     public static final Function IF = FunctionUtil.generateFunction(
-            ApplicationUtil.generateApplicationFromLeft(
+            ApplicationUtil.generateApplicationRightMost(
                     BOOLEAN_EXPRESSION, THEN_BRANCH, ELSE_BRANCH
             ),
             BOOLEAN_EXPRESSION, THEN_BRANCH, ELSE_BRANCH

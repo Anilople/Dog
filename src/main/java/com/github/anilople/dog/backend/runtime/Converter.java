@@ -12,7 +12,7 @@ public class Converter {
      * @return 自然数
      */
     public static int toJavaInt(LambdaExpression integer) {
-        Application number = ApplicationUtil.generateApplicationFromLeft(
+        Application number = ApplicationUtil.generateApplicationRightMost(
                 integer,
                 Functions.SUCCESSOR,
                 Numbers.ZERO

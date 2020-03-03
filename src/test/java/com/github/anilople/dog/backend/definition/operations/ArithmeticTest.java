@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ArithmeticTest {
 
-    private static final LambdaExpression three = ApplicationUtil.generateApplicationFromLeft(
+    private static final LambdaExpression three = ApplicationUtil.generateApplicationRightMost(
             Arithmetic.ADD,
             Numbers.ONE,
             Numbers.TWO
@@ -32,7 +32,7 @@ class ArithmeticTest {
      */
     @Test
     void subtract() {
-        LambdaExpression one = ApplicationUtil.generateApplicationFromLeft(
+        LambdaExpression one = ApplicationUtil.generateApplicationRightMost(
                 Arithmetic.SUB,
                 Numbers.TWO,
                 Numbers.ONE
@@ -46,7 +46,7 @@ class ArithmeticTest {
     @Test
     void FACTORIAL() {
         // Y组合子结合阶乘函数，计算出1*2*3=6
-        LambdaExpression six = ApplicationUtil.generateApplicationFromLeft(
+        LambdaExpression six = ApplicationUtil.generateApplicationRightMost(
                 Functions.Y, Arithmetic.FACTORIAL, three
         );
 
@@ -55,7 +55,7 @@ class ArithmeticTest {
 
     @Test
     void TO_ZERO() {
-        LambdaExpression zero = ApplicationUtil.generateApplicationFromLeft(
+        LambdaExpression zero = ApplicationUtil.generateApplicationRightMost(
                 Functions.Y, Arithmetic.TO_ZERO, Numbers.TWO
         );
         assertEquals(0, Converter.toJavaInt(zero));

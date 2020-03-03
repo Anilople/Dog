@@ -30,7 +30,7 @@ public class Logical {
             X,
             new Function(
                     Y,
-                    ApplicationUtil.generateApplicationFromLeft(
+                    ApplicationUtil.generateApplicationRightMost(
                             X, Y, FALSE
                     )
             )
@@ -44,7 +44,7 @@ public class Logical {
             X,
             new Function(
                     Y,
-                    ApplicationUtil.generateApplicationFromLeft(
+                    ApplicationUtil.generateApplicationRightMost(
                             X, TRUE, Y
                     )
             )
@@ -56,7 +56,7 @@ public class Logical {
      */
     public static Function NOT = new Function(
             B,
-            ApplicationUtil.generateApplicationFromLeft(
+            ApplicationUtil.generateApplicationRightMost(
                     B, FALSE, TRUE
             )
     );

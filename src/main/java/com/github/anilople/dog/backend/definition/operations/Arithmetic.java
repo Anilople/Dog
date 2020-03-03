@@ -24,7 +24,7 @@ public class Arithmetic {
     public static final Function SUCCESSOR = FunctionUtil.generateFunction(
             new Application(
                     Y,
-                    ApplicationUtil.generateApplicationFromLeft(W, Y, X)
+                    ApplicationUtil.generateApplicationRightMost(W, Y, X)
             ),
             W, Y, X
     );
@@ -34,10 +34,10 @@ public class Arithmetic {
      * \mnfx.mf(nfx)
      */
     public static final Function ADD = FunctionUtil.generateFunction(
-            ApplicationUtil.generateApplicationFromLeft(
+            ApplicationUtil.generateApplicationRightMost(
                     M,
                     F,
-                    ApplicationUtil.generateApplicationFromLeft(N, F, X)
+                    ApplicationUtil.generateApplicationRightMost(N, F, X)
             ),
             M, N, F, X
     );
@@ -47,7 +47,7 @@ public class Arithmetic {
      * \mnfx.m(nf)x
      */
     public static final Function MUL = FunctionUtil.generateFunction(
-            ApplicationUtil.generateApplicationFromLeft(
+            ApplicationUtil.generateApplicationRightMost(
                     M,
                     new Application(N, F),
                     X
@@ -74,7 +74,7 @@ public class Arithmetic {
      * \nfx.n (\gh.h(gf)) (u -> x) (u -> u)
      */
     public static final Function PREDECESSOR = FunctionUtil.generateFunction(
-            ApplicationUtil.generateApplicationFromLeft(
+            ApplicationUtil.generateApplicationRightMost(
                     N,
                     new Function(
                             G,
@@ -102,7 +102,7 @@ public class Arithmetic {
             M,
             new Function(
                     N,
-                    ApplicationUtil.generateApplicationFromLeft(
+                    ApplicationUtil.generateApplicationRightMost(
                             N, PREDECESSOR, M
                     )
             )
@@ -116,10 +116,10 @@ public class Arithmetic {
             F,
             new Function(
                     N,
-                    ApplicationUtil.generateApplicationFromLeft(
+                    ApplicationUtil.generateApplicationRightMost(
                             Branch.IF,
                             new Application(TypeConverter.IS_NOT_ZERO, N),
-                            ApplicationUtil.generateApplicationFromLeft(
+                            ApplicationUtil.generateApplicationRightMost(
                                     MUL,
                                     N,
                                     new Application(
@@ -143,7 +143,7 @@ public class Arithmetic {
             F,
             new Function(
                     N,
-                    ApplicationUtil.generateApplicationFromLeft(
+                    ApplicationUtil.generateApplicationRightMost(
                             Branch.IF,
                             new Application(TypeConverter.IS_NOT_ZERO, N),
                             new Application(

@@ -16,7 +16,7 @@ public class Pair {
      * \xyf.fxy
      */
     public static final Function PAIR = FunctionUtil.generateFunction(
-            ApplicationUtil.generateApplicationFromLeft(F, X, Y),
+            ApplicationUtil.generateApplicationRightMost(F, X, Y),
             X, Y, F
     );
 

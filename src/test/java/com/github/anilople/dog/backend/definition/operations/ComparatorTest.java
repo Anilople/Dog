@@ -13,21 +13,21 @@ class ComparatorTest {
 
     @Test
     void IS_LESS() {
-        LambdaExpression isLess_2_1 = ApplicationUtil.generateApplicationFromLeft(Comparator.IS_LESS, Numbers.TWO, Numbers.ONE);
+        LambdaExpression isLess_2_1 = ApplicationUtil.generateApplicationRightMost(Comparator.IS_LESS, Numbers.TWO, Numbers.ONE);
         assertTrue(
                 Booleans.FALSE.isSameStructureWithoutReduction(
                         Interpreter.interpret(isLess_2_1)
                 )
         );
 
-        LambdaExpression isLess_1_1 = ApplicationUtil.generateApplicationFromLeft(Comparator.IS_LESS, Numbers.ONE, Numbers.ONE);
+        LambdaExpression isLess_1_1 = ApplicationUtil.generateApplicationRightMost(Comparator.IS_LESS, Numbers.ONE, Numbers.ONE);
         assertTrue(
                 Booleans.FALSE.isSameStructureWithoutReduction(
                         Interpreter.interpret(isLess_1_1)
                 )
         );
 
-        LambdaExpression isLess_1_2 = ApplicationUtil.generateApplicationFromLeft(Comparator.IS_LESS, Numbers.ONE, Numbers.TWO);
+        LambdaExpression isLess_1_2 = ApplicationUtil.generateApplicationRightMost(Comparator.IS_LESS, Numbers.ONE, Numbers.TWO);
         assertTrue(
                 Booleans.TRUE.isSameStructureWithoutReduction(
                         Interpreter.interpret(isLess_1_2)
@@ -38,7 +38,7 @@ class ComparatorTest {
     @Test
     void IS_EQUAL() {
         // 1 和 2 进行比较
-        LambdaExpression notEqual = ApplicationUtil.generateApplicationFromLeft(Comparator.IS_EQUAL, Numbers.ONE, Numbers.TWO);
+        LambdaExpression notEqual = ApplicationUtil.generateApplicationRightMost(Comparator.IS_EQUAL, Numbers.ONE, Numbers.TWO);
         assertTrue(
                 Booleans.FALSE.isSameStructureWithoutReduction(
                         Interpreter.interpret(notEqual)
@@ -46,7 +46,7 @@ class ComparatorTest {
         );
 
         // 2 和 2 进行比较
-        LambdaExpression equal = ApplicationUtil.generateApplicationFromLeft(Comparator.IS_EQUAL, Numbers.TWO, Numbers.TWO);
+        LambdaExpression equal = ApplicationUtil.generateApplicationRightMost(Comparator.IS_EQUAL, Numbers.TWO, Numbers.TWO);
         assertTrue(
                 Booleans.TRUE.isSameStructureWithoutReduction(
                         Interpreter.interpret(equal)

@@ -6,7 +6,7 @@
 
     <groupId>com.github.anilople</groupId>
     <artifactId>dog</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>2.0-SNAPSHOT</version>
 
     <description>Dog编程语言</description>
 

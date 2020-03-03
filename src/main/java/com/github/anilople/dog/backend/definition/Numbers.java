@@ -44,7 +44,7 @@ public class Numbers {
             S,
             new Function(
                     Z,
-                    ApplicationUtil.generateApplicationFromRight(S, S, Z)
+                    ApplicationUtil.generateApplicationLeftMost(S, S, Z)
             )
     );
 

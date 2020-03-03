@@ -24,7 +24,7 @@ public class Comparator {
                     N,
                     new Application(
                             IS_BIGGER_THAN_ZERO,
-                            ApplicationUtil.generateApplicationFromLeft(
+                            ApplicationUtil.generateApplicationRightMost(
                                     Arithmetic.SUB, N, M
                             )
                     )
@@ -42,10 +42,10 @@ public class Comparator {
                     N,
                     new Application(
                             TypeConverter.IS_ZERO,
-                            ApplicationUtil.generateApplicationFromLeft(
+                            ApplicationUtil.generateApplicationRightMost(
                                     Arithmetic.ADD,
-                                    ApplicationUtil.generateApplicationFromLeft(Arithmetic.SUB, M, N),
-                                    ApplicationUtil.generateApplicationFromLeft(Arithmetic.SUB, N, M)
+                                    ApplicationUtil.generateApplicationRightMost(Arithmetic.SUB, M, N),
+                                    ApplicationUtil.generateApplicationRightMost(Arithmetic.SUB, N, M)
                             )
                     )
             )
@@ -61,7 +61,7 @@ public class Comparator {
                     N,
                     new Application(
                             IS_BIGGER_THAN_ZERO,
-                            ApplicationUtil.generateApplicationFromLeft(
+                            ApplicationUtil.generateApplicationRightMost(
                                     Arithmetic.SUB, M, N
                             )
                     )
@@ -76,10 +76,10 @@ public class Comparator {
             M,
             new Function(
                     N,
-                    ApplicationUtil.generateApplicationFromLeft(
+                    ApplicationUtil.generateApplicationRightMost(
                             Logical.OR,
-                            ApplicationUtil.generateApplicationFromLeft(IS_LESS, M, N),
-                            ApplicationUtil.generateApplicationFromLeft(IS_EQUAL, M, N)
+                            ApplicationUtil.generateApplicationRightMost(IS_LESS, M, N),
+                            ApplicationUtil.generateApplicationRightMost(IS_EQUAL, M, N)
                     )
             )
     );

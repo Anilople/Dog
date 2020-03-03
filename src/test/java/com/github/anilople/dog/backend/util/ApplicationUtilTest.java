@@ -17,7 +17,7 @@ class ApplicationUtilTest {
            |  \
           x    y
          */
-        Application xyz = ApplicationUtil.generateApplicationFromLeft(X, Y, Z);
+        Application xyz = ApplicationUtil.generateApplicationRightMost(X, Y, Z);
         System.out.println(xyz);
         assertEquals(X, ((Application) xyz.getLeft()).getLeft());
         assertEquals(Y, ((Application) xyz.getLeft()).getRight());
@@ -33,7 +33,7 @@ class ApplicationUtilTest {
               |  \
               y    z
          */
-        Application xyz = ApplicationUtil.generateApplicationFromRight(X, Y, Z);
+        Application xyz = ApplicationUtil.generateApplicationLeftMost(X, Y, Z);
         System.out.println(xyz);
         assertEquals(X, xyz.getLeft());
         assertEquals(Y, ((Application) xyz.getRight()).getLeft());

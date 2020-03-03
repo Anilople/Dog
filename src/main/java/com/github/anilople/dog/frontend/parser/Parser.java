@@ -159,7 +159,7 @@ public class Parser {
             lambdaExpressions[i + 1] = tryArguments.getFirst().get(i);
         }
         // 构建
-        Application application = ApplicationUtil.generateApplicationFromLeft(lambdaExpressions);
+        Application application = ApplicationUtil.generateApplicationRightMost(lambdaExpressions);
         return new Pair<>(application, tryArguments.getSecond());
     }
 
