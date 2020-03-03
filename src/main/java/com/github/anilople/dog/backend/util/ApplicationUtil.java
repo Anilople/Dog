@@ -4,6 +4,7 @@ import com.github.anilople.dog.backend.ast.lambda.Application;
 import com.github.anilople.dog.backend.ast.lambda.LambdaExpression;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * 语法有左结合和右结合，在英文中分别是left-most和right-most
@@ -15,10 +16,10 @@ public class ApplicationUtil {
     /**
      * 为了方便构造{@link Application}
      * 例子：
-     *      generateApplicationFromLeft(s, s, z)  -> ssz，即 ((s)s)z)
+     *      generateApplicationFromLeft(s, s, z)  -> ssz，即 (((s)s)z)
      * @param lambdaExpressions 一串lambda表达式
      * @return right-most
-     * @throws IllegalArgumentException 如果 表达式的数量不能为小于2个
+     * @throws IllegalArgumentException 如果 表达式的数量小于2个
      */
     public static Application generateApplicationRightMost(LambdaExpression... lambdaExpressions) {
         if(lambdaExpressions.length < 2) {
@@ -34,6 +35,27 @@ public class ApplicationUtil {
         LambdaExpression last = lambdaExpressions[lambdaExpressions.length - 1];
 
         return new Application(init, last);
+    }
+
+    /**
+     * 例子：
+     *      generateApplicationRightMost(s, [s, z]) -> (((s)s)z)
+     * @see ApplicationUtil#generateApplicationRightMost(LambdaExpression...)
+     * @param left 最左边，最下层的节点
+     * @param rest 余下的部分
+     * @return right-most
+     * @throws IllegalArgumentException 如果 rest的数量小于1个
+     */
+    public static Application generateApplicationRightMost(LambdaExpression left, List<LambdaExpression> rest) {
+        if(rest.size() < 1) {
+            throw new IllegalArgumentException(rest + "的数量不能小于1个");
+        }
+        Application leftApplication = new Application(left, rest.get(0));
+        for(int i = 1; i < rest.size(); i++) {
+            final Application nextLeftApplication = new Application(leftApplication, rest.get(i));
+            leftApplication = nextLeftApplication;
+        }
+        return leftApplication;
     }
 
     /**
