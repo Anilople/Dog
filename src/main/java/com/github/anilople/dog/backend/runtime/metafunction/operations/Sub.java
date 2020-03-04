@@ -25,7 +25,10 @@ public class Sub extends AbstractRuntimeFunction {
 
     @Override
     public LambdaExpression call(LambdaExpression replacement, Context context) {
-        LambdaExpression resultX = Evaluation.execute(replacement, context);
+        LambdaExpression resultX = Evaluation.reduceUntil(
+                replacement, context,
+                lambdaExpression -> lambdaExpression instanceof NumberName
+        );
         NumberName x = (NumberName) resultX;
         return new Sub.SubClosure(x);
     }
@@ -51,7 +54,10 @@ public class Sub extends AbstractRuntimeFunction {
 
         @Override
         public LambdaExpression call(LambdaExpression replacement, Context context) {
-            LambdaExpression resultY = Evaluation.execute(replacement, context);
+            LambdaExpression resultY = Evaluation.reduceUntil(
+                    replacement, context,
+                    lambdaExpression -> lambdaExpression instanceof NumberName
+            );
             NumberName y = (NumberName) resultY;
             assert x != null;
             return x.sub(y);

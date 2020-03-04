@@ -8,6 +8,8 @@ import com.github.anilople.dog.backend.ast.lambda.Application;
 import com.github.anilople.dog.backend.ast.lambda.Function;
 import com.github.anilople.dog.backend.ast.lambda.LambdaExpression;
 import com.github.anilople.dog.backend.ast.lambda.Name;
+import com.github.anilople.dog.backend.ast.number.IntegerName;
+import com.github.anilople.dog.backend.ast.number.NaturalName;
 import com.github.anilople.dog.frontend.DogBaseListener;
 import com.github.anilople.dog.frontend.DogParser;
 
@@ -26,6 +28,8 @@ public class DogGrammarTreeListener extends DogBaseListener {
     private final Stack<LambdaExpression> lambdaExpressionStack = new Stack<>();
 
     private final Stack<Name> nameStack = new Stack<>();
+
+    private final Stack<NumberName> numberNameStack = new Stack<>();
 
     @Override
     public void exitEvaluation(DogParser.EvaluationContext ctx) {
@@ -78,8 +82,23 @@ public class DogGrammarTreeListener extends DogBaseListener {
 
     @Override
     public void exitNumberName(DogParser.NumberNameContext ctx) {
-        NumberName numberName = new NumberName(ctx.getText());
+        NumberName numberName = numberNameStack.pop();
         nameStack.push(numberName);
+    }
+
+    @Override
+    public void exitNaturalName(DogParser.NaturalNameContext ctx) {
+        final String text = ctx.getText();
+        final int value = Integer.parseInt(text);
+        final NaturalName naturalName = new NaturalName(value);
+        numberNameStack.push(naturalName);
+    }
+
+    @Override
+    public void exitIntegerName(DogParser.IntegerNameContext ctx) {
+        final String text = ctx.getText();
+        final IntegerName integerName = new IntegerName(text);
+        numberNameStack.push(integerName);
     }
 
     public List<Evaluation> getEvaluations() {

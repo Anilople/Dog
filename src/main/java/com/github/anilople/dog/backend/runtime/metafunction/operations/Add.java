@@ -21,7 +21,10 @@ public class Add extends AbstractRuntimeFunction {
 
     @Override
     public LambdaExpression call(LambdaExpression replacement, Context context) {
-        LambdaExpression resultX = Evaluation.execute(replacement, context);
+        LambdaExpression resultX = Evaluation.reduceUntil(
+                replacement, context,
+                lambdaExpression -> lambdaExpression instanceof NumberName
+        );
         NumberName x = (NumberName) resultX;
         return new AddClosure(x);
     }
@@ -47,10 +50,13 @@ public class Add extends AbstractRuntimeFunction {
 
         @Override
         public LambdaExpression call(LambdaExpression replacement, Context context) {
-            LambdaExpression result = Evaluation.execute(replacement, context);
-            NumberName numberName = (NumberName) result;
+            LambdaExpression resultY = Evaluation.reduceUntil(
+                    replacement, context,
+                    lambdaExpression -> lambdaExpression instanceof NumberName
+            );
+            NumberName y = (NumberName) resultY;
             assert x != null;
-            return x.add(numberName);
+            return x.add(y);
         }
 
         @Override

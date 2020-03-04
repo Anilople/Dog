@@ -35,12 +35,20 @@ stringName
     :   StringLiteral
     ;
 numberName
+    :   naturalName
+    |   integerName
+    ;
+
+naturalName
+    :   NaturalLiteral
+    ;
+
+integerName
     :   IntegerLiteral
     ;
 
-
 Identifier
-    :   [a-zA-Z]+
+    :   [a-zA-Z] [a-zA-Z0-9]*
     ;
 
 StringLiteral
@@ -57,7 +65,18 @@ StringCharacter
     :   ~["]
     ;
 
+// 自然数
+NaturalLiteral
+    :   '+'? Digits
+    ;
+
+// 整数
 IntegerLiteral
+    :   ('+' | '-')? Digits
+    ;
+
+// 纯数字
+Digits
     :   [0-9]+
     ;
 
