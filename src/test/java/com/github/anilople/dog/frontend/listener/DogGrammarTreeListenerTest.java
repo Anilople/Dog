@@ -1,25 +1,26 @@
-package com.github.anilople.dog.frontend.parser;
+package com.github.anilople.dog.frontend.listener;
 
-import com.github.anilople.dog.backend.ast.Evaluation;
 import com.github.anilople.dog.frontend.DogLexer;
 import com.github.anilople.dog.frontend.DogParser;
-import com.github.anilople.dog.frontend.listener.DogGrammarTreeListener;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
+import org.junit.jupiter.api.Test;
 
-import java.util.List;
+class DogGrammarTreeListenerTest {
 
-public class Parser {
-
-    public static List<Evaluation> parse(String text) {
+    @Test
+    void simple() {
+        String text = "(Bind[a -> {a}][B])";
         DogLexer dogLexer = new DogLexer(CharStreams.fromString(text));
         DogParser dogParser = new DogParser(new CommonTokenStream(dogLexer));
-
+        ParseTree parseTree = dogParser.evaluations();
+//        System.out.println(parseTree.toStringTree(dogParser));
         ParseTreeWalker parseTreeWalker = new ParseTreeWalker();
         DogGrammarTreeListener dogGrammarTreeListener = new DogGrammarTreeListener();
-        parseTreeWalker.walk(dogGrammarTreeListener, dogParser.evaluations());
-
-        return dogGrammarTreeListener.getEvaluations();
+        parseTreeWalker.walk(dogGrammarTreeListener, parseTree);
+        System.out.println(dogGrammarTreeListener.getEvaluations());
     }
+
 }

@@ -73,4 +73,18 @@ class PrintLineTest {
         assertEquals("hello, world" + System.lineSeparator(), outputStream.toString());
     }
 
+    /**
+     * 空字符串测试（不是null）
+     */
+    @Test
+    void emptyString() {
+        OutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+
+        Interpreter.interpret("(PrintLine[\"\"])");
+
+        STD_OUT.println(outputStream.toString());
+        assertEquals("" + System.lineSeparator(), outputStream.toString());
+    }
+
 }
