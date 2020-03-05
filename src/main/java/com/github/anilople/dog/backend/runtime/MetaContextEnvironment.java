@@ -1,6 +1,9 @@
 package com.github.anilople.dog.backend.runtime;
 
 import com.github.anilople.dog.backend.ast.VariableName;
+import com.github.anilople.dog.backend.definition.Booleans;
+import com.github.anilople.dog.backend.definition.Functions;
+import com.github.anilople.dog.backend.definition.branch.Branch;
 import com.github.anilople.dog.backend.runtime.metafunction.Bind;
 import com.github.anilople.dog.backend.runtime.metafunction.input.InputLine;
 import com.github.anilople.dog.backend.runtime.metafunction.operations.*;
@@ -50,6 +53,21 @@ public class MetaContextEnvironment {
         // 取模 %
         CONTEXT.addUnmodifiable(new VariableName(Mod.class.getSimpleName()), Mod.getInstance());
         CONTEXT.addUnmodifiable(new VariableName("%"), Mod.getInstance());
+
+        // id函数
+        CONTEXT.addUnmodifiable(new VariableName("Id"), Functions.ID);
+        CONTEXT.addUnmodifiable(new VariableName("id"), Functions.ID);
+
+        // 布尔函数
+        CONTEXT.addUnmodifiable(new VariableName("True"), Booleans.TRUE);
+        CONTEXT.addUnmodifiable(new VariableName("true"), Booleans.TRUE);
+        CONTEXT.addUnmodifiable(new VariableName("False"), Booleans.FALSE);
+        CONTEXT.addUnmodifiable(new VariableName("false"), Booleans.FALSE);
+
+        // if语句
+        CONTEXT.addUnmodifiable(new VariableName("If"), Branch.IF);
+        CONTEXT.addUnmodifiable(new VariableName("if"), Branch.IF);
+
     }
 
 }
