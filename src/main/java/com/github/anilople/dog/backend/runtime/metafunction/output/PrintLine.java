@@ -25,13 +25,8 @@ public class PrintLine extends AbstractRuntimeFunction {
 
     @Override
     public LambdaExpression call(LambdaExpression replacement, Context context) {
-        // 不断规约，直到不是一个 引用
-        LambdaExpression result = Evaluation.reduceUntil(
-                replacement,
-                context,
-                lambdaExpression -> ! (lambdaExpression instanceof VariableName)
-        );
-        System.out.println(result);
+        Print.getInstance().call(replacement, context);
+        Print.newLine();
         return null;
     }
 
