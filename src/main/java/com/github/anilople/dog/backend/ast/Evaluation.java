@@ -77,6 +77,29 @@ public class Evaluation {
         return lambdaExpression;
     }
 
+    /**
+     * 不断规约，直到{@link LambdaExpression}的类型
+     * 是所给类型的子类，或者和所给类型相同
+     * @param tClass 给定的类型对应的{@link java.lang.Class}
+     * @param <T> 类型
+     * @return 对应类型的对象
+     */
+    public static <T extends LambdaExpression> T reduceToConformType(
+            LambdaExpression lambdaExpression,
+            Context context,
+            Class<T> tClass
+    ) {
+        while(null != lambdaExpression
+                && lambdaExpression.isReducible(context)
+                && ! tClass.isAssignableFrom(lambdaExpression.getClass())
+        ) {
+            Reducible reducible = (Reducible) lambdaExpression;
+            // 更新表达式
+            lambdaExpression = reducible.reduce(context);
+        }
+        return tClass.cast(lambdaExpression);
+    }
+
     @Override
     public String toString() {
         return "(" + lambdaExpression + ")";

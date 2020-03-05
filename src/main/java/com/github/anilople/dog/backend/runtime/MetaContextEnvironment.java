@@ -8,6 +8,7 @@ import com.github.anilople.dog.backend.definition.operations.Logical;
 import com.github.anilople.dog.backend.runtime.metafunction.Bind;
 import com.github.anilople.dog.backend.runtime.metafunction.input.InputLine;
 import com.github.anilople.dog.backend.runtime.metafunction.operations.*;
+import com.github.anilople.dog.backend.runtime.metafunction.operations.comparator.NumberComparator;
 import com.github.anilople.dog.backend.runtime.metafunction.output.Print;
 import com.github.anilople.dog.backend.runtime.metafunction.output.PrintLine;
 
@@ -82,6 +83,10 @@ public class MetaContextEnvironment {
         CONTEXT.addUnmodifiable(new VariableName("If"), Branch.IF);
         CONTEXT.addUnmodifiable(new VariableName("if"), Branch.IF);
 
+        // 比较
+        CONTEXT.addUnmodifiable(new VariableName("=="), NumberComparator.Equal.getInstance());
+        CONTEXT.addUnmodifiable(new VariableName("<"), NumberComparator.Less.getInstance());
+        CONTEXT.addUnmodifiable(new VariableName(">"), NumberComparator.Great.getInstance());
     }
 
 }

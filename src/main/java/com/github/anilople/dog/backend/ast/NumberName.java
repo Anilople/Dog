@@ -5,7 +5,7 @@ import com.github.anilople.dog.backend.ast.lambda.Name;
 /**
  * 表达数字
  */
-public abstract class NumberName extends Name {
+public abstract class NumberName extends Name implements Comparable<NumberName> {
 
     public NumberName(String literals) {
         super(literals);
@@ -15,8 +15,6 @@ public abstract class NumberName extends Name {
      * 加法
      */
     public abstract NumberName add(NumberName that);
-
-//    public abstract T add(NumberName<? extends NumberName<?>> that);
 
     /**
      * 减法

@@ -33,12 +33,14 @@ public class Interpreter {
      * 每次都重新初始化{@link Context}
      * @param text 要解释的文本
      */
-    public static void interpret(String text) {
+    public static LambdaExpression interpret(String text) {
         final Context metaContext = MetaContextEnvironment.getMetaContext();
         List<Evaluation> evaluations = Parser.parse(text);
+        LambdaExpression result = null;
         for(Evaluation evaluation : evaluations) {
-            evaluation.execute(metaContext);
+            result = evaluation.execute(metaContext);
         }
+        return result;
     }
 
     /**
@@ -46,10 +48,12 @@ public class Interpreter {
      * @param text 要解释的文本
      * @param context 解释时的系统环境
      */
-    public static void interpret(String text, Context context) {
+    public static LambdaExpression interpret(String text, Context context) {
         List<Evaluation> evaluations = Parser.parse(text);
+        LambdaExpression result = null;
         for(Evaluation evaluation : evaluations) {
-            evaluation.execute(context);
+            result = evaluation.execute(context);
         }
+        return result;
     }
 }

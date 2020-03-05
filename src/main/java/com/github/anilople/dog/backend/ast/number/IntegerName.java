@@ -1,5 +1,6 @@
 package com.github.anilople.dog.backend.ast.number;
 
+import com.github.anilople.dog.backend.ast.Evaluation;
 import com.github.anilople.dog.backend.ast.NumberName;
 
 /**
@@ -52,5 +53,12 @@ public class IntegerName extends NumberName {
         int y = Integer.parseInt(that.getLiterals());
         int result = x % y;
         return new IntegerName(result);
+    }
+
+    @Override
+    public int compareTo(NumberName o) {
+        int x = Integer.parseInt(this.getLiterals());
+        int y = Integer.parseInt(o.getLiterals());
+        return x - y;
     }
 }
