@@ -4,6 +4,7 @@ import com.github.anilople.dog.backend.ast.VariableName;
 import com.github.anilople.dog.backend.definition.Booleans;
 import com.github.anilople.dog.backend.definition.Functions;
 import com.github.anilople.dog.backend.definition.branch.Branch;
+import com.github.anilople.dog.backend.definition.operations.Logical;
 import com.github.anilople.dog.backend.runtime.metafunction.Bind;
 import com.github.anilople.dog.backend.runtime.metafunction.input.InputLine;
 import com.github.anilople.dog.backend.runtime.metafunction.operations.*;
@@ -63,6 +64,19 @@ public class MetaContextEnvironment {
         CONTEXT.addUnmodifiable(new VariableName("true"), Booleans.TRUE);
         CONTEXT.addUnmodifiable(new VariableName("False"), Booleans.FALSE);
         CONTEXT.addUnmodifiable(new VariableName("false"), Booleans.FALSE);
+
+        // 布尔运算
+        CONTEXT.addUnmodifiable(new VariableName("And"), Logical.AND);
+        CONTEXT.addUnmodifiable(new VariableName("and"), Logical.AND);
+        CONTEXT.addUnmodifiable(new VariableName("&&"), Logical.AND);
+
+        CONTEXT.addUnmodifiable(new VariableName("Or"), Logical.OR);
+        CONTEXT.addUnmodifiable(new VariableName("or"), Logical.OR);
+        CONTEXT.addUnmodifiable(new VariableName("||"), Logical.OR);
+
+        CONTEXT.addUnmodifiable(new VariableName("Not"), Logical.NOT);
+        CONTEXT.addUnmodifiable(new VariableName("not"), Logical.NOT);
+        CONTEXT.addUnmodifiable(new VariableName("!"), Logical.NOT);
 
         // if语句
         CONTEXT.addUnmodifiable(new VariableName("If"), Branch.IF);
