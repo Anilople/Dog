@@ -1,1 +1,18 @@
 (PrintLine["hello, world"])
+
+(PrintLine[Eval])
+
+(Bind
+	[GetMax]
+	[
+		x -> {
+			y -> {
+				if[>[x][y]]
+					[x]
+					[y]
+			}
+		}
+	]
+)
+
+(PrintNumber[GetMax[3][6]])

@@ -11,6 +11,7 @@ import com.github.anilople.dog.backend.runtime.metafunction.operations.*;
 import com.github.anilople.dog.backend.runtime.metafunction.operations.comparator.NumberComparator;
 import com.github.anilople.dog.backend.runtime.metafunction.output.Print;
 import com.github.anilople.dog.backend.runtime.metafunction.output.PrintLine;
+import com.github.anilople.dog.backend.runtime.metafunction.output.PrintNumber;
 
 /**
  * 解释器运行之前，
@@ -35,6 +36,7 @@ public class MetaContextEnvironment {
         // 输出
         CONTEXT.addUnmodifiable(new VariableName(PrintLine.class.getSimpleName()), PrintLine.getInstance());
         CONTEXT.addUnmodifiable(new VariableName(Print.class.getSimpleName()), Print.getInstance());
+        CONTEXT.addUnmodifiable(new VariableName(PrintNumber.class.getSimpleName()), PrintNumber.getInstance());
 
         // 输入
         CONTEXT.addUnmodifiable(new VariableName(InputLine.class.getSimpleName()), InputLine.getInstance());
