@@ -13,6 +13,7 @@ import com.github.anilople.dog.backend.ast.number.NaturalName;
 import com.github.anilople.dog.backend.util.ApplicationUtil;
 import com.github.anilople.dog.frontend.DogBaseListener;
 import com.github.anilople.dog.frontend.DogParser;
+import org.antlr.v4.runtime.tree.ErrorNode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -118,6 +119,11 @@ public class DogGrammarTreeListener extends DogBaseListener {
         final String text = ctx.getText();
         final IntegerName integerName = new IntegerName(text);
         numberNameStack.push(integerName);
+    }
+
+    @Override
+    public void visitErrorNode(ErrorNode node) {
+        throw new IllegalStateException(node.toString());
     }
 
     public List<Evaluation> getEvaluations() {
