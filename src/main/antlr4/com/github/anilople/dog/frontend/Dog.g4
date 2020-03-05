@@ -17,9 +17,16 @@ evaluation
 
 // lambda 表达式
 lambdaExpression
-    :   name                                      #nameLabel
-    |   name '->' '{' lambdaExpression '}'        #functionLabel
-    |   lambdaExpression '[' lambdaExpression ']' #applicationLabel
+    :   name arguments                      #applicationLabel
+    |   name '->' '{' lambdaExpression '}'  #functionLabel
+    |   name                                #nameLabel
+    ;
+
+arguments
+    :   argument+
+    ;
+argument
+    :   '[' lambdaExpression ']'
     ;
 
 name

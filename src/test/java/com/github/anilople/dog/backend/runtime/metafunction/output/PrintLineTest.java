@@ -38,26 +38,24 @@ class PrintLineTest {
         OutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
 
-        Interpreter.interpret("(PrintLine[a][b])");
+        Interpreter.interpret("(PrintLine[a])");
 
         assertEquals(
-                "a"  + System.lineSeparator() +
-                        "b" + System.lineSeparator(),
+                "a"  + System.lineSeparator(),
                 outputStream.toString()
         );
     }
 
     @Test
-    void simpleNest() {
+    void naturalNumber() {
         OutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
 
-        Interpreter.interpret("(PrintLine[x -> {x}[one]][Void])");
+        Interpreter.interpret("(PrintLine[1])");
 
         STD_OUT.println(outputStream.toString());
         assertEquals(
-                "one"  + System.lineSeparator() +
-                        "Void" + System.lineSeparator(),
+                "1"  + System.lineSeparator(),
                 outputStream.toString()
         );
     }

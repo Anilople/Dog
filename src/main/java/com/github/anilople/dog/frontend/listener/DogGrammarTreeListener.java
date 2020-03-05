@@ -10,6 +10,7 @@ import com.github.anilople.dog.backend.ast.lambda.LambdaExpression;
 import com.github.anilople.dog.backend.ast.lambda.Name;
 import com.github.anilople.dog.backend.ast.number.IntegerName;
 import com.github.anilople.dog.backend.ast.number.NaturalName;
+import com.github.anilople.dog.backend.util.ApplicationUtil;
 import com.github.anilople.dog.frontend.DogBaseListener;
 import com.github.anilople.dog.frontend.DogParser;
 
@@ -31,6 +32,8 @@ public class DogGrammarTreeListener extends DogBaseListener {
 
     private final Stack<NumberName> numberNameStack = new Stack<>();
 
+    private final Stack<List<LambdaExpression>> argumentsStack = new Stack<>();
+
     @Override
     public void exitEvaluation(DogParser.EvaluationContext ctx) {
         LambdaExpression lambdaExpression = lambdaExpressionStack.pop();
@@ -40,10 +43,26 @@ public class DogGrammarTreeListener extends DogBaseListener {
 
     @Override
     public void exitApplicationLabel(DogParser.ApplicationLabelContext ctx) {
-        LambdaExpression right = lambdaExpressionStack.pop();
+        // 左边
         LambdaExpression left = lambdaExpressionStack.pop();
-        Application application = new Application(left, right);
+        // 右边所有
+        List<LambdaExpression> rights = argumentsStack.pop();
+
+        Application application = ApplicationUtil.generateApplicationRightMost(left, rights);
         lambdaExpressionStack.push(application);
+    }
+
+    @Override
+    public void enterArguments(DogParser.ArgumentsContext ctx) {
+        argumentsStack.push(new ArrayList<>());
+    }
+
+    @Override
+    public void exitArgument(DogParser.ArgumentContext ctx) {
+        // 从解析出的lambda中获取参数
+        LambdaExpression lambdaExpression = lambdaExpressionStack.pop();
+        List<LambdaExpression> arguments = argumentsStack.peek();
+        arguments.add(lambdaExpression);
     }
 
     @Override

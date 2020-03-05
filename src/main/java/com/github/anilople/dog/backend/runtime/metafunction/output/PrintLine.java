@@ -1,6 +1,7 @@
 package com.github.anilople.dog.backend.runtime.metafunction.output;
 
 import com.github.anilople.dog.backend.ast.Evaluation;
+import com.github.anilople.dog.backend.ast.VariableName;
 import com.github.anilople.dog.backend.ast.lambda.LambdaExpression;
 import com.github.anilople.dog.backend.ast.lambda.Name;
 import com.github.anilople.dog.backend.runtime.AbstractRuntimeFunction;
@@ -24,9 +25,14 @@ public class PrintLine extends AbstractRuntimeFunction {
 
     @Override
     public LambdaExpression call(LambdaExpression replacement, Context context) {
-        LambdaExpression lambdaExpression = Evaluation.execute(replacement, context);
-        System.out.println(lambdaExpression);
-        return this;
+        // 不断规约，直到不是一个 引用
+        LambdaExpression result = Evaluation.reduceUntil(
+                replacement,
+                context,
+                lambdaExpression -> ! (lambdaExpression instanceof VariableName)
+        );
+        System.out.println(result);
+        return null;
     }
 
     @Override
