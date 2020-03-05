@@ -37,7 +37,9 @@ name
 
 variableName
     :   Identifier
+    |   SpecialCharacters
     ;
+
 stringName
     :   StringLiteral
     ;
@@ -55,7 +57,13 @@ integerName
     ;
 
 Identifier
-    :   [a-zA-Z] [a-zA-Z0-9]*
+    :   [a-zA-Z] ([a-zA-Z0-9] | '.' | '?')*
+    ;
+
+// 特殊字符，按键盘顺序列举
+// 里面没有 ()[]{}
+SpecialCharacters
+    :   ('~'|'!'|'@'|'#'|'$'|'%'|'^'|'&'|'*'|'+'|'-'|'='|'|'|'<'|'>')+
     ;
 
 StringLiteral

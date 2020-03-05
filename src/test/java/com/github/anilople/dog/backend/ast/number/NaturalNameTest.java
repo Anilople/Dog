@@ -14,13 +14,14 @@ import static org.junit.jupiter.api.Assertions.*;
 class NaturalNameTest {
 
     /**
-     * 让Plus只作用1次
+     * 让Plus只作用0次，
+     * 也就是不进行任何作用
      */
     @Test
     void zero() {
         Context context = MetaContextEnvironment.getMetaContext();
 
-        final String text = "(Bind[Plus][Add[1]])" +
+        final String text = "(Bind[Plus][Add[1]])" + System.lineSeparator() +
                 "(Bind[Five][0[Plus][5]])";
 
         Interpreter.interpret(text, context);
