@@ -13,23 +13,6 @@ import java.util.List;
 public class Interpreter {
 
     /**
-     * 不断规约
-     * @param lambdaExpression {@link LambdaExpression}表达式
-     * @return 无法继续规约的表达式
-     */
-    public static LambdaExpression interpret(LambdaExpression lambdaExpression) {
-//        System.out.println(lambdaExpression);
-        Context metaContext = MetaContextEnvironment.getMetaContext();
-        while(lambdaExpression.isReducible(metaContext)) {
-            Reducible reducible = (Reducible) lambdaExpression;
-            // 更新表达式
-            lambdaExpression = reducible.reduce(metaContext);
-//            System.out.println(lambdaExpression);
-        }
-        return lambdaExpression;
-    }
-
-    /**
      * 每次都重新初始化{@link Context}
      * @param text 要解释的文本
      */

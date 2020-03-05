@@ -1,5 +1,6 @@
 package com.github.anilople.dog.backend.runtime;
 
+import com.github.anilople.dog.backend.ast.Evaluation;
 import com.github.anilople.dog.backend.ast.lambda.Application;
 import com.github.anilople.dog.backend.ast.lambda.LambdaExpression;
 import com.github.anilople.dog.backend.util.ApplicationUtil;
@@ -17,7 +18,7 @@ public class Converter {
                 Functions.SUCCESSOR,
                 Numbers.ZERO
         );
-        return Integer.parseInt(Interpreter.interpret(number).toString());
+        return Integer.parseInt(Evaluation.execute(number, null).toString());
     }
 
 }

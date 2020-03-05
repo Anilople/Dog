@@ -24,7 +24,10 @@ public class Evaluation {
     }
 
     /**
-     * 不断reduce
+     * 不断规约
+     * @param lambdaExpression {@link LambdaExpression}表达式
+     * @param context 规约时的系统环境{@link Context}
+     * @return 无法继续规约的表达式
      */
     public static LambdaExpression execute(LambdaExpression lambdaExpression, Context context) {
         while(null != lambdaExpression && lambdaExpression.isReducible(context)) {

@@ -1,5 +1,6 @@
 package com.github.anilople.dog.backend.definition.operations;
 
+import com.github.anilople.dog.backend.ast.Evaluation;
 import com.github.anilople.dog.backend.ast.lambda.Application;
 import com.github.anilople.dog.backend.definition.Booleans;
 import com.github.anilople.dog.backend.definition.Numbers;
@@ -18,7 +19,7 @@ class TypeConverterTest {
         assertTrue(
                 Booleans.FALSE
                         .isSameStructureWithoutReduction(
-                                Interpreter.interpret(false2)
+                                Evaluation.execute(false2, null)
                         )
         );
 
@@ -26,7 +27,7 @@ class TypeConverterTest {
         assertTrue(
                 Booleans.TRUE
                         .isSameStructureWithoutReduction(
-                                Interpreter.interpret(true0)
+                                Evaluation.execute(true0, null)
                         )
         );
     }
@@ -35,19 +36,19 @@ class TypeConverterTest {
     void IS_NOT_ZERO() {
         assertTrue(
                 Booleans.FALSE.isSameStructureWithoutReduction(
-                        Interpreter.interpret(new Application(IS_NOT_ZERO, Numbers.ZERO))
+                        Evaluation.execute(new Application(IS_NOT_ZERO, Numbers.ZERO), null)
                 )
         );
 
         assertTrue(
                 Booleans.TRUE.isSameStructureWithoutReduction(
-                        Interpreter.interpret(new Application(IS_NOT_ZERO, Numbers.ONE))
+                        Evaluation.execute(new Application(IS_NOT_ZERO, Numbers.ONE), null)
                 )
         );
 
         assertTrue(
                 Booleans.TRUE.isSameStructureWithoutReduction(
-                        Interpreter.interpret(new Application(IS_NOT_ZERO, Numbers.TWO))
+                        Evaluation.execute(new Application(IS_NOT_ZERO, Numbers.TWO), null)
                 )
         );
     }

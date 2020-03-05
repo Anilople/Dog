@@ -1,5 +1,6 @@
 package com.github.anilople.dog.backend.runtime;
 
+import com.github.anilople.dog.backend.ast.Evaluation;
 import com.github.anilople.dog.backend.ast.lambda.Application;
 import com.github.anilople.dog.backend.ast.lambda.LambdaExpression;
 import com.github.anilople.dog.backend.ast.lambda.Function;
@@ -41,7 +42,7 @@ public class Functions {
                 return Arithmetic.SUCCESSOR.call(replacement, context);
             } else if(replacement instanceof Application){
                 // 先reduce直到不能reduce为止
-                LambdaExpression afterReduceAll = Interpreter.interpret(replacement);
+                LambdaExpression afterReduceAll = Evaluation.execute(replacement, null);
                 // 取出数字
                 Name oldNumber = (Name) afterReduceAll;
                 int value = Integer.parseInt(oldNumber.getLiterals());

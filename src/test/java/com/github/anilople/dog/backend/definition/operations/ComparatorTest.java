@@ -1,5 +1,6 @@
 package com.github.anilople.dog.backend.definition.operations;
 
+import com.github.anilople.dog.backend.ast.Evaluation;
 import com.github.anilople.dog.backend.ast.lambda.LambdaExpression;
 import com.github.anilople.dog.backend.definition.Booleans;
 import com.github.anilople.dog.backend.definition.Numbers;
@@ -16,21 +17,21 @@ class ComparatorTest {
         LambdaExpression isLess_2_1 = ApplicationUtil.generateApplicationRightMost(Comparator.IS_LESS, Numbers.TWO, Numbers.ONE);
         assertTrue(
                 Booleans.FALSE.isSameStructureWithoutReduction(
-                        Interpreter.interpret(isLess_2_1)
+                        Evaluation.execute(isLess_2_1, null)
                 )
         );
 
         LambdaExpression isLess_1_1 = ApplicationUtil.generateApplicationRightMost(Comparator.IS_LESS, Numbers.ONE, Numbers.ONE);
         assertTrue(
                 Booleans.FALSE.isSameStructureWithoutReduction(
-                        Interpreter.interpret(isLess_1_1)
+                        Evaluation.execute(isLess_1_1, null)
                 )
         );
 
         LambdaExpression isLess_1_2 = ApplicationUtil.generateApplicationRightMost(Comparator.IS_LESS, Numbers.ONE, Numbers.TWO);
         assertTrue(
                 Booleans.TRUE.isSameStructureWithoutReduction(
-                        Interpreter.interpret(isLess_1_2)
+                        Evaluation.execute(isLess_1_2, null)
                 )
         );
     }
@@ -41,7 +42,7 @@ class ComparatorTest {
         LambdaExpression notEqual = ApplicationUtil.generateApplicationRightMost(Comparator.IS_EQUAL, Numbers.ONE, Numbers.TWO);
         assertTrue(
                 Booleans.FALSE.isSameStructureWithoutReduction(
-                        Interpreter.interpret(notEqual)
+                        Evaluation.execute(notEqual, null)
                 )
         );
 
@@ -49,7 +50,7 @@ class ComparatorTest {
         LambdaExpression equal = ApplicationUtil.generateApplicationRightMost(Comparator.IS_EQUAL, Numbers.TWO, Numbers.TWO);
         assertTrue(
                 Booleans.TRUE.isSameStructureWithoutReduction(
-                        Interpreter.interpret(equal)
+                        Evaluation.execute(equal, null)
                 )
         );
     }
