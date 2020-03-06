@@ -29,7 +29,7 @@
 
 		<!-- 代码 -->
 		<fileSet>
-			<directory>${project.build.testOutputDirectory}</directory>
+			<directory>${project.basedir}/src/main/dog</directory>
 			<outputDirectory>.</outputDirectory>
 			<includes>
 				<include>*.dog</include>

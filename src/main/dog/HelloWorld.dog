@@ -1,0 +1,5 @@
+/*
+    hello, world
+    示例
+*/
+(Print["hello, world"])

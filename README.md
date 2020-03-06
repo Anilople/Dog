@@ -21,15 +21,19 @@ java -jar dog-xxx.jar HelloWorld.dog
 
 即可开始了第一步。
 
-后续在这个文件上进行修改即可。
+后续在文件`HelloWorld.dog`上进行修改即可。
 
 ## Tutorial
 
-Dog是一门基于[Lambda演算](https://personal.utdallas.edu/~gupta/courses/apl/lambda.pdf)的编程语言
+Dog是一门基于[Lambda演算](https://personal.utdallas.edu/~gupta/courses/apl/lambda.pdf)的编程语言，语法规则很少（就是括号有点多）。
+
+从常见的`hello, world`说起，如下
 
 ```ruby
-(PrintLine["hello, world"])
+(Print["hello, world"])
 ```
+
+每句Dog语言，都由`(`和`)`包裹， 去掉小括号，得到里面的内容`Print["hello, world"]`就是即将被执行的语句，表示`Print`接受参数`"hello, world"`，将其打印到控制台。
 
 ### Meta Lambda Expression
 
@@ -37,71 +41,14 @@ Dog是一门基于[Lambda演算](https://personal.utdallas.edu/~gupta/courses/ap
 
 ## Specification
 
-### Lexer 词法分析
+### 前端语法
 
-```assembly
-InputElement:
-	WhiteSpace
-	Comment
-	Token
-WhiteSpace: [ \t\r\n]+
-Token:
-	DogString: "[^"]*"
-    Variable: [a-zA-Z][A-Za-z0-9_?\.]*
-    Number: [0-9]+
-    BindArrow: <-
-    FunctionArrow: ->
-    LeftParenthesis: (
-    RightParenthesis: )
-    LeftBrackets: [
-    RightBrackets: ]
-    LeftBigParenthesis: {
-    RightBigParenthesis: }
-```
+人生苦短，Parser太长。
 
-### Parser 语法分析
+使用了[antlr](https://www.antlr.org/)来解决文本到语法树的难题。
 
-The syntax `{x}` on the right-hand side of a production denotes **zero or more**
-occurrences of `x`.
+描述文件为[Dog.g4](src/main/antlr4/com/github/anilople/dog/frontend/Dog.g4)
 
-`'c'`表示字面常量`c`
+### 后端设计
 
-```assembly
-letter:
-	a b c
-	ed f
-```
-
-表示`letter`可以是`a b c`或者`ed f`，如果2种情况都满足，那么会优先选择排在前面的。
-
-终止符为词法分析中，分析出来的`Token`
-
-```assembly
-Evaluations:
-	{Evaluation}
-Evaluation:
-	'(' LambdaExpression ')'
-LambdaExpression:
-	Application
-	Function
-	Name
-Application:
-	Function Arguments
-	Name Arguments
-Function:
-	Name FunctionArrow '{' LambdaExpression '}'
-Arguments:
-	Argument {Argument}
-Argument:
-	'[' LambdaExpression ']'
-Name:
-	StringName
-	VariableName
-	NumberName
-StringName:
-	DogString
-VariableName:
-	Variable
-NumberName:
-	Number
-```
+Everything is lambda!
