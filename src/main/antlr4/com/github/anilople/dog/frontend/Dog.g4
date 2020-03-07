@@ -5,6 +5,7 @@
     不明白的地方可以翻文档，或者Wiki
 */
 grammar Dog;
+import Name;
 
 evaluations
     :   evaluation*? EOF
@@ -17,11 +18,12 @@ evaluation
 
 // lambda 表达式
 lambdaExpression
-    :   name arguments                      #applicationLabel
-    |   name '->' '{' lambdaExpression '}'  #functionLabel
-    |   name                                #nameLabel
+    :   name arguments  #applicationLabel
+    |   name body       #functionLabel
+    |   name            #nameLabel
     ;
 
+// 参数
 arguments
     :   argument+
     ;
@@ -29,85 +31,23 @@ argument
     :   '[' lambdaExpression ']'
     ;
 
-name
-    : variableName
-    | stringName
-    | numberName
+// 函数body
+body
+    :   '->' '{' lambdaExpression '}'
     ;
 
-variableName
-    :   Identifier
-    |   SpecialCharacters
+// 跳过空白符
+SkipWhiteSpace
+    : WhiteSpace -> skip
     ;
 
-stringName
-    :   StringLiteral
-    ;
-numberName
-    :   naturalName
-    |   integerName
+
+// 跳过行注释
+SkipLineComment
+    :   LineComment -> skip
     ;
 
-naturalName
-    :   NaturalLiteral
-    ;
-
-integerName
-    :   IntegerLiteral
-    ;
-
-Identifier
-    :   [a-zA-Z] ([a-zA-Z0-9] | '.' | '?')*
-    ;
-
-// 特殊字符，按键盘顺序列举
-// 里面没有 ()[]{}
-SpecialCharacters
-    :   ('~'|'!'|'@'|'#'|'$'|'%'|'^'|'&'|'*'|'+'|'-'|'='|'|'|'<'|'>')+
-    ;
-
-StringLiteral
-	:	'"' StringCharacters? '"'
-	;
-
-fragment
-StringCharacters
-	:	StringCharacter+
-	;
-
-fragment
-StringCharacter
-    :   ~["]
-    ;
-
-// 自然数
-NaturalLiteral
-    :   '+'? Digits
-    ;
-
-// 整数
-IntegerLiteral
-    :   ('+' | '-')? Digits
-    ;
-
-// 纯数字
-Digits
-    :   [0-9]+
-    ;
-
-// 空白符 WhiteSpace
-WhiteSpace
-    :   [ \t\r\n]+ -> skip
-    ;
-
-/*
-    注释 Comments
-*/
-LineComment
-    :   '//' ~[\r\n]* -> skip
-    ;
-
-// 块注释:
-BlockComment
-    :   '/*' .*? '*/' -> skip
+// 跳过块注释:
+SkipBlockComment
+    :   BlockComment -> skip
     ;
