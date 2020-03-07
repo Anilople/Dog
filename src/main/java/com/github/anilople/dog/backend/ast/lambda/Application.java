@@ -28,9 +28,15 @@ public class Application extends LambdaExpression implements Reducible {
         return new Application(newLeft, newRight);
     }
 
+    /**
+     * 由于{@link this#reduce(Context)}中已经不会去reduce右边，
+     * 所以检查是否可以reduce时，也不需要去检查右边了
+     * @param context
+     * @return
+     */
     @Override
     public boolean isReducible(Context context) {
-        return left.isReducible(context) || right.isReducible(context) || left.isCallable();
+        return left.isReducible(context) || left.isCallable();
     }
 
     @Override
