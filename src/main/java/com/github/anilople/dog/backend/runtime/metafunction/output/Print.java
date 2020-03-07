@@ -33,13 +33,10 @@ public class Print extends AbstractRuntimeFunction {
     @Override
     public LambdaExpression call(LambdaExpression replacement, Context context) {
         // 不断规约，直到不是一个 引用
-        LambdaExpression result = Evaluation.reduceUntil(
-                replacement,
-                context,
-                lambdaExpression -> ! (lambdaExpression instanceof VariableName)
-        );
+        // 不断规约，直到无法规约
+        LambdaExpression result = Evaluation.execute(replacement, context);
         System.out.print(result);
-        return null;
+        return result;
     }
 
     @Override
