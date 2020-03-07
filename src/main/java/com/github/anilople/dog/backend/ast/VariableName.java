@@ -16,7 +16,10 @@ public class VariableName extends Name implements Reducible {
 
     @Override
     public boolean isReducible(Context context) {
-        return context.exists(this);
+        if(!context.exists(this)) {
+            throw new IllegalStateException(this.getClass().getSimpleName() + " " + this + " not exists!");
+        }
+        return true;
     }
 
     @Override
