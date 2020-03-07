@@ -73,10 +73,10 @@ public class ApplicationUtil {
             return new Application(lambdaExpressions[0], lambdaExpressions[1]);
         }
 
-        // 头
+        // 头 变成 左子树
         final LambdaExpression head = lambdaExpressions[0];
-        // 余下部分
-        final LambdaExpression tail = generateApplicationRightMost(
+        // 余下部分 变成 右子树
+        final LambdaExpression tail = generateApplicationLeftMost(
                 Arrays.copyOfRange(
                         lambdaExpressions,
                         1,
