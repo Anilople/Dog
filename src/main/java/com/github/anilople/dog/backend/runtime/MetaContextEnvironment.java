@@ -1,11 +1,13 @@
 package com.github.anilople.dog.backend.runtime;
 
+import com.github.anilople.dog.backend.ast.NullName;
 import com.github.anilople.dog.backend.ast.VariableName;
 import com.github.anilople.dog.backend.definition.Booleans;
 import com.github.anilople.dog.backend.definition.Functions;
 import com.github.anilople.dog.backend.definition.branch.Branch;
 import com.github.anilople.dog.backend.definition.operations.Logical;
 import com.github.anilople.dog.backend.runtime.metafunction.Bind;
+import com.github.anilople.dog.backend.runtime.metafunction.IsNullName;
 import com.github.anilople.dog.backend.runtime.metafunction.input.InputLine;
 import com.github.anilople.dog.backend.runtime.metafunction.operations.*;
 import com.github.anilople.dog.backend.runtime.metafunction.operations.comparator.NumberComparator;
@@ -32,6 +34,13 @@ public class MetaContextEnvironment {
     static {
         // 绑定，定义变量
         CONTEXT.addUnmodifiable(new VariableName(Bind.class.getSimpleName()), Bind.getInstance());
+
+        // NULL
+        CONTEXT.addUnmodifiable(new VariableName("Null"), NullName.getInstance());
+        CONTEXT.addUnmodifiable(new VariableName("NULL"), NullName.getInstance());
+        // 判断是否为NULL
+        CONTEXT.addUnmodifiable(new VariableName("Null?"), IsNullName.getInstance());
+        CONTEXT.addUnmodifiable(new VariableName("IsNull"), IsNullName.getInstance());
 
         // 输出
         CONTEXT.addUnmodifiable(new VariableName(PrintLine.class.getSimpleName()), PrintLine.getInstance());
