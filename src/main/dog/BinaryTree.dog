@@ -1,0 +1,135 @@
+(
+	Bind
+	[Tree]
+	[left -> {
+			mid -> {
+				right -> {
+					f -> {
+						f
+						[left]
+						[mid]
+						[right]
+					}
+				}
+			}
+		}
+	]
+)
+(
+	Bind
+	[TreeLeft]
+	[tree -> {
+			tree
+			[left -> {
+					mid -> {
+						right -> {
+							left
+						}
+					}
+				}
+			]
+		}
+	]
+)
+(
+	Bind
+	[TreeRight]
+	[tree -> {
+			tree
+			[left -> {
+					mid -> {
+						right -> {
+							right
+						}
+					}
+				}
+			]
+		}
+	]
+)
+(
+	Bind
+	[TreeValue]
+	[tree -> {
+			tree
+			[left -> {
+					mid -> {
+						right -> {
+							mid
+						}
+					}
+				}
+			]
+		}
+	]
+)
+(
+	Bind
+	[TreeInsert]
+	[tree -> {
+			value -> {
+				if
+				[Null?
+					[tree]
+				]
+				[Tree
+					[Null]
+					[value]
+					[Null]
+				]
+				[if
+					[<
+						[value]
+						[TreeValue
+							[t]
+						]
+					]
+					[Tree
+						[TreeInsert
+							[TreeLeft
+								[tree]
+							]
+							[value]
+						]
+						[TreeValue
+							[t]
+						]
+						[TreeLeft
+							[tree]
+						]
+					]
+					[Tree
+						[TreeLeft
+							[tree]
+						]
+						[TreeValue
+							[t]
+						]
+						[TreeInsert
+							[TreeRight
+								[tree]
+							]
+							[value]
+						]
+					]
+				]
+			}
+		}
+	]
+)
+(
+	Bind
+	[t]
+	[Tree
+		[Null]
+		[9]
+		[Null]
+	]
+)
+(
+	Print
+	[TreeInsert
+		[t]
+		[0]
+	]
+)

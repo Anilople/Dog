@@ -16,7 +16,7 @@ class BindTest {
     @Test
     void bindPrint() {
         final String text = "(Bind[Out][Print])" +
-                "(Out[d])";
+                "(Out[\"d\"])";
         Interpreter.interpret(text);
     }
 
@@ -24,7 +24,7 @@ class BindTest {
     void bindBind() {
         final String text = "(Bind[NewBind][Bind])" +
                 "(NewBind[Out][Print])" +
-                "(Out[BC])";
+                "(Out[\"BC\"])";
         Interpreter.interpret(text);
     }
 

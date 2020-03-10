@@ -27,7 +27,7 @@ class PrintLineTest {
         OutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
 
-        Interpreter.interpret("(PrintLine[hello])");
+        Interpreter.interpret("(PrintLine[\"hello\"])");
 
         STD_OUT.println(outputStream.toString());
         assertEquals("hello" + System.lineSeparator(), outputStream.toString());
@@ -38,7 +38,7 @@ class PrintLineTest {
         OutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
 
-        Interpreter.interpret("(PrintLine[a])");
+        Interpreter.interpret("(PrintLine[\"a\"])");
 
         assertEquals(
                 "a"  + System.lineSeparator(),
@@ -51,7 +51,7 @@ class PrintLineTest {
         OutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
 
-        Interpreter.interpret("(PrintLine[1])");
+        Interpreter.interpret("(PrintLine[\"1\"])");
 
         STD_OUT.println(outputStream.toString());
         assertEquals(

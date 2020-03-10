@@ -1,6 +1,7 @@
 package com.github.anilople.dog.backend.util;
 
 import com.github.anilople.dog.backend.ast.lambda.Application;
+import com.github.anilople.dog.backend.ast.lambda.Name;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -56,5 +57,27 @@ class ApplicationUtilTest {
         assertEquals(X, xyz.getLeft());
         assertEquals(Y, ((Application) xyz.getRight()).getLeft());
         assertEquals(Z, ((Application) xyz.getRight()).getRight());
+    }
+
+    @Test
+    void generateApplicationLeftMost() {
+        /*
+                0
+              /   \
+             f     0
+                 /   \
+                f     0
+                    /   \
+                   f     x
+         */
+        Application fffx = ApplicationUtil.generateApplicationLeftMost(F, F, F, X);
+
+        Application ffx = (Application) fffx.getRight();
+
+        Application fx = (Application) ffx.getRight();
+
+        Name f = (Name) fx.getLeft();
+
+        Name x = (Name) fx.getRight();
     }
 }
