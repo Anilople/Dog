@@ -1,0 +1,46 @@
+(
+	Bind
+	[Pair]
+	[x -> {
+			y -> {
+				f -> {
+					f
+					[x]
+					[y]
+				}
+			}
+		}
+	]
+)
+(
+	Bind
+	[Pair.GetLeft]
+	[pair -> {
+			pair
+			[True]
+		}
+	]
+)
+(
+	Bind
+	[Pair.GetRight]
+	[pair -> {
+			pair
+			[False]
+		}
+	]
+)
+(
+	Bind
+	[Persons]
+	[Pair
+		["a"]
+		["b"]
+	]
+)
+(
+	Print
+	[Pair.GetRight
+		[Persons]
+	]
+)
