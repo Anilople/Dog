@@ -3,7 +3,10 @@ package com.github.anilople.dog.backend.runtime;
 import com.github.anilople.dog.backend.ast.VariableName;
 import com.github.anilople.dog.backend.ast.lambda.LambdaExpression;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Map;
+import java.util.Stack;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -14,23 +17,17 @@ public class Context {
 
     /**
      * {@link VariableName}和{@link LambdaExpression}绑定的记录表
-     * 一旦添加，后续不可变
      */
-    private final Map<VariableName, LambdaExpression> unmodifiableTable = new ConcurrentHashMap<>();
-
-    /**
-     * 临时{@link VariableName}和{@link LambdaExpression}绑定的记录表
-     * 添加后，可以被覆盖
-     */
-    private final Map<VariableName, LambdaExpression> temporaryTable = new ConcurrentHashMap<>();
+    private final Map<VariableName, Stack<LambdaExpression>> scopes = new ConcurrentHashMap<>();
     
     Context() {
 
     }
 
     Context(Context context) {
-        // 仅仅会复制不可变的表
-        this.unmodifiableTable.putAll(context.unmodifiableTable);
+        this();
+        // 复制
+        scopes.putAll(context.scopes);
     }
 
     /**
@@ -47,45 +44,35 @@ public class Context {
      * @return 变量是否存在绑定
      */
     public boolean exists(VariableName variableName) {
-        return unmodifiableTable.containsKey(variableName)
-                || temporaryTable.containsKey(variableName);
+        return scopes.containsKey(variableName) && !scopes.get(variableName).isEmpty();
     }
 
     /**
-     * 增加不可变的变量
-     * @param unmodifiableVariable 不可变的变量
-     * @param lambdaExpression 对应的{@link LambdaExpression}
+     * @param variableName 变量
+     * @throws RuntimeException 如果变量不存在
      */
-    void addUnmodifiable(VariableName unmodifiableVariable, LambdaExpression lambdaExpression) {
-        if(exists(unmodifiableVariable)) {
-            throw new IllegalStateException(unmodifiableVariable + "已经绑定了" + unmodifiableTable.get(unmodifiableVariable));
+    public void ensureExists(VariableName variableName) {
+        if(!exists(variableName)) {
+            throw new RuntimeException(variableName + "未定义");
         }
-        // 添加绑定
-        unmodifiableTable.put(unmodifiableVariable, lambdaExpression);
-    }
-
-    /**
-     * 添加可变的临时变量
-     * @param modifiableVariable 临时变量
-     * @param lambdaExpression 对应的{@link LambdaExpression}
-     */
-    void addTemporary(VariableName modifiableVariable, LambdaExpression lambdaExpression) {
-        temporaryTable.put(modifiableVariable, lambdaExpression);
     }
 
     /**
      * 添加{@link VariableName}和{@link LambdaExpression}对应的引用
      * @param variableName 变量
-     * @param lambdaExpression 表达式
+     * @param lambdaExpression 变量代表的{@link LambdaExpression}
+     * @throws RuntimeException 如果变量不可变，并且已经绑定
      */
-    public void add(VariableName variableName, LambdaExpression lambdaExpression) {
-        if(isUnmodifiable(variableName)) {
-            // 不可变
-            addUnmodifiable(variableName, lambdaExpression);
-        } else {
-            // 可变
-            addTemporary(variableName, lambdaExpression);
+    public void addToScope(VariableName variableName, LambdaExpression lambdaExpression) {
+        if(exists(variableName) && isUnmodifiable(variableName)) {
+            throw new RuntimeException(variableName + "不可变");
         }
+
+        if(!scopes.containsKey(variableName)) {
+            scopes.put(variableName, new Stack<>());
+        }
+
+        scopes.get(variableName).push(lambdaExpression);
     }
 
     /**
@@ -93,25 +80,25 @@ public class Context {
      * @return 变量代表的表达式
      */
     public LambdaExpression get(VariableName variableName) {
-        if(!exists(variableName)) {
-            throw new RuntimeException(variableName + "未定义");
-        }
-        // 先从不可变区域找
-        LambdaExpression unmodifiableValue = unmodifiableTable.get(variableName);
-        if(null != unmodifiableValue) {
-            // 找到了
-            return unmodifiableValue;
-        }
+        ensureExists(variableName);
+        Stack<LambdaExpression> stack = scopes.get(variableName);
+        // 返回栈顶
+        return stack.peek();
+    }
 
-        // 从可变区域找
-        LambdaExpression temporaryValue = temporaryTable.get(variableName);
-        if(null != temporaryValue) {
-            // 找到了
-            return temporaryValue;
+    /**
+     * 将之前变量和{@link LambdaExpression}的绑定关系解除，
+     * 注意只会解除一个！！
+     * @param variableName 变量
+     */
+    public void removeFromScope(VariableName variableName) {
+        ensureExists(variableName);
+        Stack<LambdaExpression> stack = scopes.get(variableName);
+        if(stack.empty()) {
+            throw new RuntimeException(variableName + "无定义");
+        } else {
+            stack.pop();
         }
-
-        // 无法找到
-        throw new IllegalStateException("未定义" + variableName);
     }
 
 }
