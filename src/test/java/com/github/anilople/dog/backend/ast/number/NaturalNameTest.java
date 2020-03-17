@@ -19,7 +19,7 @@ class NaturalNameTest {
      */
     @Test
     void zero() {
-        Context context = MetaContextEnvironment.getMetaContext();
+        Context context = new Context();
 
         final String text = "(Bind[Plus][Add[1]])" + System.lineSeparator() +
                 "(Bind[Five][0[Plus][5]])";
@@ -41,7 +41,7 @@ class NaturalNameTest {
      */
     @Test
     void two() {
-        Context context = MetaContextEnvironment.getMetaContext();
+        Context context = new Context();
 
         final String text = "(Bind[Plus6][Add[6]])" +
                 "(Bind[Number15][2[Plus6][3]])" +

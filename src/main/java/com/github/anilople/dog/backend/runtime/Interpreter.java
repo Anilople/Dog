@@ -2,9 +2,7 @@ package com.github.anilople.dog.backend.runtime;
 
 import com.github.anilople.dog.backend.ast.Evaluation;
 import com.github.anilople.dog.backend.ast.lambda.LambdaExpression;
-import com.github.anilople.dog.backend.ast.lambda.Reducible;
 import com.github.anilople.dog.frontend.parser.Parser;
-
 import java.util.List;
 
 /**
@@ -17,7 +15,7 @@ public class Interpreter {
      * @param text 要解释的文本
      */
     public static LambdaExpression interpret(String text) {
-        final Context metaContext = MetaContextEnvironment.getMetaContext();
+        final Context metaContext = new Context();
         List<Evaluation> evaluations = Parser.parse(text);
         LambdaExpression result = null;
         for(Evaluation evaluation : evaluations) {
