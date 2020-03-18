@@ -1,14 +1,17 @@
 package com.github.anilople.dog;
 
+import com.github.anilople.dog.backend.constant.PathNameConstant;
 import com.github.anilople.dog.backend.runtime.Context;
 import com.github.anilople.dog.backend.runtime.Interpreter;
 import com.github.anilople.dog.frontend.formater.CodeFormatter;
 import java.io.IOException;
+import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Scanner;
+import java.util.function.Consumer;
 
 public class DogLanguage {
 
@@ -50,9 +53,21 @@ public class DogLanguage {
    * @param filePaths 所有代码文件的路径
    */
   public static void format(String[] filePaths) throws IOException {
+
+    final Consumer<Path> pathConsumer = path -> {
+      // 是文件，并且后缀符合，才会进行格式化
+      if (!Files.isDirectory(path) && path.getFileName().toString().endsWith(PathNameConstant.CODE_FILE_SUFFIX)) {
+        try {
+          CodeFormatter.format(path);
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
+    };
+
     for (String filePath : filePaths) {
       Path path = Paths.get(filePath);
-      CodeFormatter.format(path);
+      Files.walk(path).forEach(pathConsumer);
     }
   }
 
