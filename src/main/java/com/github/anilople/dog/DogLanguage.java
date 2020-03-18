@@ -3,9 +3,9 @@ package com.github.anilople.dog;
 import com.github.anilople.dog.backend.constant.PathNameConstant;
 import com.github.anilople.dog.backend.runtime.Context;
 import com.github.anilople.dog.backend.runtime.Interpreter;
+import com.github.anilople.dog.constant.DogConstant;
 import com.github.anilople.dog.frontend.formater.CodeFormatter;
 import java.io.IOException;
-import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -17,15 +17,34 @@ public class DogLanguage {
 
   public static void main(String[] args) throws IOException {
     if (args.length <= 0) {
+      printUsage();
+    } else if (args[0].equals("-i")) {
       // 进入 交互模式
       interaction();
     } else if (args[0].equals("-format")) {
       format(Arrays.copyOfRange(args, 1, args.length));
-    } else {
+    } else if (args[0].equals("-run")) {
       // 传入了文件路径
-      // 执行这些代码
-      execute(args);
+      // 执行这些代码，记得将参数去除，将文件名留下
+      execute(Arrays.copyOfRange(args, 1, args.length));
+    } else {
+      throw new IllegalStateException("无法识别的命令: " + Arrays.toString(args));
     }
+  }
+
+  /**
+   * 输出帮助信息.
+   */
+  public static void printUsage() {
+    final StringBuilder stringBuilder = new StringBuilder();
+
+    stringBuilder.append("Dog编程语言，版本 ").append(DogConstant.VERSION).append(System.lineSeparator());
+    stringBuilder.append("使用参数 -i 可以进入交互模式").append(System.lineSeparator());
+    stringBuilder.append("使用参数 -run 代码文件名 可以运行代码").append(System.lineSeparator());
+    stringBuilder.append("使用参数 -format 文件名或路径 可以对代码执行格式化").append(System.lineSeparator());
+    stringBuilder.append("通过VM参数: ").append(PathNameConstant.CODE_LIBRARY_ROOT).append(" 指定包的路径").append(System.lineSeparator());
+
+    System.out.println(stringBuilder.toString());
   }
 
   /**

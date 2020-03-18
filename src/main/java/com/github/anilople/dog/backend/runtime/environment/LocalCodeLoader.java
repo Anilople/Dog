@@ -15,7 +15,8 @@ import java.util.List;
 public class LocalCodeLoader implements CodeLoader {
 
   /**
-   * 从程序的运行路径获取
+   * 从程序的运行路径获取.
+   * 从指定的包路径获取.
    */
   private static final LocalCodeLoader DEFAULT_INSTANCE = new LocalCodeLoader(
       Arrays.asList(

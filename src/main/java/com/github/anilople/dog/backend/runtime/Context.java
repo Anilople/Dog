@@ -26,58 +26,40 @@ public class Context {
    * 代码加载器
    */
   private final List<CodeLoader> codeLoaders;
+
   /**
    * 存储这个{@link Context}已经{@link Import}了那些包. 以及包对应的{@link Context}
    */
   private final PackageTree<Map<VariableName, Stack<LambdaExpression>>> packageTree = new PackageTree<>();
+
   /**
    * 包名，必须添加. 默认的包名无节点
    */
   private String currentPackageName = "";
 
   public Context() {
-    this.codeLoaders = Collections.singletonList(LocalCodeLoader.getDefaultInstance());
-
-    Map<VariableName, Stack<LambdaExpression>> scopes = MapUtil.transferValue(
-        MetaContextEnvironment.getMetaScopes(),
-        lambdaExpression -> {
-          Stack<LambdaExpression> stack = new Stack<>();
-          stack.push(lambdaExpression);
-          return stack;
-        }
-    );
-
-    this.packageTree.add(META_SCOPES_PACKAGE_NAME, new ConcurrentHashMap<>(scopes));
-  }
-
-  public Context(String currentPackageName) {
-    this();
-    this.currentPackageName = currentPackageName;
-  }
-
-  private Context(List<CodeLoader> codeLoaders) {
-    this.codeLoaders = codeLoaders;
-
-    Map<VariableName, Stack<LambdaExpression>> scopes = MapUtil.transferValue(
-        MetaContextEnvironment.getMetaScopes(),
-        lambdaExpression -> {
-          Stack<LambdaExpression> stack = new Stack<>();
-          stack.push(lambdaExpression);
-          return stack;
-        }
-    );
-
-    this.packageTree.add(META_SCOPES_PACKAGE_NAME, new ConcurrentHashMap<>(scopes));
+    this("", Collections.singletonList(LocalCodeLoader.getDefaultInstance()));
   }
 
   public Context(String currentPackageName, List<CodeLoader> codeLoaders) {
-    this(codeLoaders);
+    this.codeLoaders = codeLoaders;
+
+    // 添加meta绑定
+    Map<VariableName, Stack<LambdaExpression>> scopes = MapUtil.transferValue(
+        MetaContextEnvironment.getMetaScopes(),
+        lambdaExpression -> {
+          Stack<LambdaExpression> stack = new Stack<>();
+          stack.push(lambdaExpression);
+          return stack;
+        }
+    );
+
     this.currentPackageName = currentPackageName;
+    this.packageTree.add(META_SCOPES_PACKAGE_NAME, new ConcurrentHashMap<>(scopes));
   }
 
   /**
-   * 添加新的，包里面的内容
-   *
+   * 导入其它包的内容
    * @param packageTree          包和scope一一对应的数据结构
    * @param currentPackageName   当前包名
    * @param newScopesPackageName 要添加的包的包名
@@ -90,14 +72,8 @@ public class Context {
       final Map<VariableName, Stack<LambdaExpression>> newScopes) {
     if (!packageTree.exists(newScopesPackageName)) {
       // 之前没加入，才会进行加入
-      final Map<VariableName, Stack<LambdaExpression>> thatNewScopes;
-      if (currentPackageName.equals(newScopesPackageName)) {
-        // 需要relink
-        thatNewScopes = ContextUtil.relink(currentPackageName, newScopes);
-      } else {
-        // 已经relink过了，不需要relink
-        thatNewScopes = newScopes;
-      }
+      // 需要relink
+      final Map<VariableName, Stack<LambdaExpression>> thatNewScopes = ContextUtil.relink(newScopesPackageName, newScopes);
       packageTree.add(newScopesPackageName, thatNewScopes);
     }
   }
@@ -136,6 +112,12 @@ public class Context {
     }
   }
 
+  /**
+   * 通过包名来从获取包对应的scopes.
+   * 如果不存在则会创建，避免了调用者在创建上的烦恼.
+   * @param packageName 包名
+   * @return 包对应的scopes
+   */
   Map<VariableName, Stack<LambdaExpression>> getScopesByPackageName(String packageName) {
     if (!packageTree.exists(packageName)) {
       packageTree.add(packageName, new ConcurrentHashMap<>());
@@ -145,7 +127,7 @@ public class Context {
 
   /**
    * 根据包名获取代码文本
-   *
+   * 会将包名转为具体的路径，寻找在路径下的文件.
    * @param packageName 包名
    * @return 代码文本
    * @throws IllegalStateException 如果包名不存在
@@ -171,8 +153,8 @@ public class Context {
 
   /**
    * 从包中加载新的{@link Context}
-   *
    * @param packageName 包名，用来寻找到代码
+   * @throws IllegalStateException 如果代码的包名不符合要求
    */
   public void addContextFrom(String packageName) {
     // 不存在才添加
@@ -184,6 +166,12 @@ public class Context {
 
       // 在 meta context下运行代码
       Interpreter.interpret(codeText, codeContext);
+
+      // 检查得到的包名是否符合要求
+      if (!packageName.equals(codeContext.getCurrentPackageName())) {
+        // 包名不符合要求
+        throw new IllegalStateException("要求的包名为 " + packageName + "，但是得到的包名为" + codeContext.getCurrentPackageName());
+      }
 
       // 得到了包对应的 context
       // code context准备完毕，将其加入当前的context

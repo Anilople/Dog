@@ -11,7 +11,7 @@ class PackageTest {
   @Test
   void call() {
     Package packageInstance = Package.getInstance();
-    Context context = new Context("");
+    Context context = new Context();
     packageInstance.call(new VariableName("b.Tree"), context);
 
     assertEquals("b.Tree", context.getCurrentPackageName());

@@ -15,12 +15,13 @@ public class PathNameConstant {
    */
   public static final String WORK_DIRECTORY = System.getProperty("user.dir");
 
+  public static final String CODE_LIBRARY_ROOT = "code.library.root";
   /**
    * 库的路径
    */
   public static final String LIBRARY_ROOT = (
-      null == System.getProperty("code.library.root") ?
-          WORK_DIRECTORY : System.getProperty("code.library.root")
+      null == System.getProperty(CODE_LIBRARY_ROOT) ?
+          WORK_DIRECTORY : System.getProperty(CODE_LIBRARY_ROOT)
   );
 
 }
