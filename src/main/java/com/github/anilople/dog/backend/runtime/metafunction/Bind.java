@@ -61,7 +61,7 @@ public class Bind extends AbstractRuntimeFunction {
 
         @Override
         public LambdaExpression call(LambdaExpression replacement, Context context) {
-            context.add(variableName, replacement);
+            context.addToScope(variableName, replacement);
             return null;
         }
 

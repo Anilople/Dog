@@ -1,6 +1,11 @@
 (
+	Package
+	[std.Tree]
+)
+// 构造
+(
 	Bind
-	[Tree]
+	[New]
 	[left -> {
 			mid -> {
 				right -> {
@@ -15,9 +20,10 @@
 		}
 	]
 )
+// 取左边部分
 (
 	Bind
-	[TreeLeft]
+	[GetLeft]
 	[tree -> {
 			tree
 			[left -> {
@@ -31,9 +37,10 @@
 		}
 	]
 )
+// 取右边部分
 (
 	Bind
-	[TreeRight]
+	[GetRight]
 	[tree -> {
 			tree
 			[left -> {
@@ -47,9 +54,10 @@
 		}
 	]
 )
+// 取中间部分
 (
 	Bind
-	[TreeValue]
+	[GetValue]
 	[tree -> {
 			tree
 			[left -> {
@@ -63,73 +71,62 @@
 		}
 	]
 )
+// 插入新的值
 (
 	Bind
-	[TreeInsert]
+	[InsertValue]
 	[tree -> {
 			value -> {
 				if
 				[Null?
 					[tree]
 				]
-				[Tree
+				[New
 					[Null]
 					[value]
 					[Null]
 				]
-				[if
-					[<
-						[value]
-						[TreeValue
-							[t]
-						]
+				[Let
+					[treeValue]
+					[GetValue
+						[tree]
 					]
-					[Tree
-						[TreeInsert
-							[TreeLeft
-								[tree]
-							]
-							[value]
-						]
-						[TreeValue
-							[t]
-						]
-						[TreeLeft
+					[Let
+						[leftPart]
+						[GetLeft
 							[tree]
 						]
-					]
-					[Tree
-						[TreeLeft
-							[tree]
-						]
-						[TreeValue
-							[t]
-						]
-						[TreeInsert
-							[TreeRight
+						[Let
+							[rightPart]
+							[GetRight
 								[tree]
 							]
-							[value]
+							[if
+								[<
+									[value]
+									[treeValue]
+								]
+								[New
+									[InsertValue
+										[leftPart]
+										[value]
+									]
+									[treeValue]
+									[leftPart]
+								]
+								[New
+									[leftPart]
+									[treeValue]
+									[InsertValue
+										[rightPart]
+										[value]
+									]
+								]
+							]
 						]
 					]
 				]
 			}
 		}
-	]
-)
-(
-	Bind
-	[t]
-	[Tree
-		[Null]
-		[9]
-		[Null]
-	]
-)
-(
-	Print
-	[TreeInsert
-		[t]
-		[0]
 	]
 )

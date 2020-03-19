@@ -37,7 +37,7 @@ public class InputLine extends AbstractRuntimeFunction {
         Scanner scanner = new Scanner(System.in);
         String line = scanner.nextLine();
         // 添加到环境中
-        context.add(variableName, new StringName(line));
+        context.addToScope(variableName, new StringName(line));
         // 从环境中拿出
         return context.get(variableName);
     }

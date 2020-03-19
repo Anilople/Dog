@@ -36,8 +36,11 @@ public class CodeFormatter {
         String text = new String(bytes);
         String textAfterFormatted = format(text);
 
-        // 将format后的文本写回文件
-        Files.write(path, textAfterFormatted.getBytes());
+        // 如果格式化前的内容和格式化后的内容一致，就无需写入
+        if(!text.equals(textAfterFormatted)) {
+            // 将format后的文本写回文件
+            Files.write(path, textAfterFormatted.getBytes());
+        }
     }
 
     /**

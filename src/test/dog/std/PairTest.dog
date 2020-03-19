@@ -1,0 +1,28 @@
+/*
+  测试
+*/
+(
+	Import
+	[std.Pair]
+)
+(
+	Bind
+	[Persons]
+	// 新建Pair
+	[std.Pair.New
+		["a"]
+		["b"]
+	]
+)
+(
+	Print
+	[std.Pair.GetRight
+		[Persons]
+	]
+)
+(
+	Print
+	[std.Pair.GetLeft
+		[Persons]
+	]
+)
