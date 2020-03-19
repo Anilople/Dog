@@ -1,0 +1,26 @@
+/*
+  测试
+*/
+(
+	Import
+	[std.Tree]
+)
+(
+	Bind
+	[tree]
+	// 建立一颗二叉树
+	[std.Tree.New
+		[Null]
+		[9]
+		[Null]
+	]
+)
+(
+	Print
+	// 将值insert到二叉树中，然而旧的tree结构不会被改变
+	// 会产生新的tree
+	[std.Tree.InsertValue
+		[tree]
+		[0]
+	]
+)
