@@ -23,6 +23,11 @@ public class Context {
   private static final String META_SCOPES_PACKAGE_NAME = "";
 
   /**
+   * 包加载的缓存
+   */
+  private static final Map<String, Context> packageCaches = new ConcurrentHashMap<>();
+
+  /**
    * 代码加载器
    */
   private final List<CodeLoader> codeLoaders;
@@ -31,6 +36,8 @@ public class Context {
    * 存储这个{@link Context}已经{@link Import}了那些包. 以及包对应的{@link Context}
    */
   private final PackageTree<Map<VariableName, Stack<LambdaExpression>>> packageTree = new PackageTree<>();
+
+  private final Map<VariableName, Stack<LambdaExpression>> scopes = new ConcurrentHashMap<>();
 
   /**
    * 包名，必须添加. 默认的包名无节点
@@ -157,8 +164,8 @@ public class Context {
    * @throws IllegalStateException 如果代码的包名不符合要求
    */
   public void addContextFrom(String packageName) {
-    // 不存在才添加
-    if (!packageTree.exists(packageName)) {
+    // 看缓存中是否存在
+    if(!packageCaches.containsKey(packageName)) {
       // 获取代码
       final String codeText = this.getCodeTextFrom(packageName);
       // 获取 meta context
@@ -172,8 +179,14 @@ public class Context {
         // 包名不符合要求
         throw new IllegalStateException("要求的包名为 " + packageName + "，但是得到的包名为" + codeContext.getCurrentPackageName());
       }
+      // 添加到缓存中
+      packageCaches.put(packageName, codeContext);
+    }
 
+    // 看是否已经加入
+    if (!packageTree.exists(packageName)) {
       // 得到了包对应的 context
+      Context codeContext = packageCaches.get(packageName);
       // code context准备完毕，将其加入当前的context
       this.addContextFrom(codeContext);
     }
