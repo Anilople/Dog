@@ -66,26 +66,6 @@ public class Context {
   }
 
   /**
-   * 导入其它包的内容
-   * @param packageTree          包和scope一一对应的数据结构
-   * @param currentPackageName   当前包名
-   * @param newScopesPackageName 要添加的包的包名
-   * @param newScopes            新包的变量表
-   */
-  static void addContextFrom(
-      final PackageTree<Map<VariableName, Stack<LambdaExpression>>> packageTree,
-      final String currentPackageName,
-      final String newScopesPackageName,
-      final Map<VariableName, Stack<LambdaExpression>> newScopes) {
-    if (!packageTree.exists(newScopesPackageName)) {
-      // 之前没加入，才会进行加入
-      // 需要relink
-      final Map<VariableName, Stack<LambdaExpression>> thatNewScopes = ContextUtil.relink(newScopesPackageName, newScopes);
-      packageTree.add(newScopesPackageName, thatNewScopes);
-    }
-  }
-
-  /**
    * 首字母大写的{@link VariableName}是不可变的
    *
    * @return {@link VariableName}是否是可变的
@@ -153,8 +133,21 @@ public class Context {
    */
   private void addContextFrom(Context that) {
     that.packageTree.forEach(
-        (packageName, scopes) ->
-            addContextFrom(this.packageTree, this.currentPackageName, packageName, scopes)
+        (packageName, scopes) -> {
+          // 不存在则进行添加
+          if(!this.packageTree.exists(packageName)) {
+            // 看是否需要relink
+            final Map<VariableName, Stack<LambdaExpression>> newScopes;
+            if (packageName.equals(that.getCurrentPackageName())) {
+              // 此时才需要relink
+              newScopes = ContextUtil.relink(packageName, scopes);
+            } else {
+              // 已经relink过了，无需再relink
+              newScopes = scopes;
+            }
+            this.packageTree.add(packageName, newScopes);
+          }
+        }
     );
   }
 
