@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,14 +18,30 @@ public class LocalCodeLoader implements CodeLoader {
    * 从程序的运行路径获取.
    * 从指定的包路径获取.
    */
-  private static final LocalCodeLoader DEFAULT_INSTANCE = new LocalCodeLoader(
-      Arrays.asList(
-          Paths.get(PathNameConstant.WORK_DIRECTORY),
-          Paths.get(PathNameConstant.LIBRARY_ROOT)
-      )
-  );
+  private static volatile LocalCodeLoader DEFAULT_INSTANCE = loadInstance();
+
   /**
-   * 代码所处的起始路径. 设计生
+   * 载入实例
+   */
+  static LocalCodeLoader loadInstance() {
+    List<Path> pathList = new ArrayList<>();
+    pathList.add(Paths.get(PathNameConstant.WORK_DIRECTORY));
+
+    final String libraryPath = System.getProperty(PathNameConstant.CODE_LIBRARY_ROOT);
+    if(null != libraryPath) {
+      // 存在
+      pathList.add(Paths.get(libraryPath));
+    } else {
+      // 未设置
+      System.out.println(PathNameConstant.CODE_LIBRARY_ROOT + "未设置");
+    }
+
+    return new LocalCodeLoader(pathList);
+  }
+
+  /**
+   * 代码所处的起始路径.
+   * 库函数路径等.
    */
   private final List<Path> roots;
 
@@ -51,7 +67,7 @@ public class LocalCodeLoader implements CodeLoader {
       }
     }
     // 没找到
-    throw new IllegalStateException(packageName + "不存在");
+    throw new IllegalStateException("getCodeFilePath包" + packageName + "不存在");
   }
 
   @Override
@@ -77,4 +93,15 @@ public class LocalCodeLoader implements CodeLoader {
     return false;
   }
 
+  @Override
+  public void reload() {
+    DEFAULT_INSTANCE = loadInstance();
+  }
+
+  @Override
+  public String toString() {
+    return "LocalCodeLoader{" +
+        "roots=" + roots +
+        '}';
+  }
 }

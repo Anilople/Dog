@@ -15,7 +15,7 @@ public class PackageTree<DATA> {
 
   public void ensureExists(String packageName) {
     if (!exists(packageName)) {
-      throw new IllegalStateException(packageName + "不存在");
+      throw new IllegalStateException("ensureExists包" + packageName + "不存在");
     }
   }
 

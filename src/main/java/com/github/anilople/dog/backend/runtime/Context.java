@@ -37,8 +37,6 @@ public class Context {
    */
   private final PackageTree<Map<VariableName, Stack<LambdaExpression>>> packageTree = new PackageTree<>();
 
-  private final Map<VariableName, Stack<LambdaExpression>> scopes = new ConcurrentHashMap<>();
-
   /**
    * 包名，必须添加. 默认的包名无节点
    */
@@ -125,7 +123,7 @@ public class Context {
         return codeLoader.getText(packageName);
       }
     }
-    throw new IllegalStateException(packageName + "不存在");
+    throw new IllegalStateException("getCodeTextFrom包" + packageName + "不存在, code loaders = " + this.codeLoaders);
   }
 
   /**

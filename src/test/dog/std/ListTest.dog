@@ -1,0 +1,15 @@
+(
+	Import
+	[std.List]
+)
+(
+	Bind
+	[empty]
+	[std.List.Empty]
+)
+(
+	Print
+	[std.List.IsEmpty
+		[empty]
+	]
+)

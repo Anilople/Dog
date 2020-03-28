@@ -1,0 +1,57 @@
+(
+	Package
+	[std.List]
+)
+(
+	Import
+	[std.Pair]
+)
+// 用 Pair 构造 列表
+(
+	Bind
+	[Empty]
+	[std.Pair.New
+		[True]
+		[True]
+	]
+)
+(
+	Bind
+	[IsEmpty]
+	[list -> {
+			std.Pair.GetRight
+			[list]
+		}
+	]
+)
+(
+	Bind
+	[Head]
+	[list -> {
+			std.Pair.GetLeft
+			[list]
+		}
+	]
+)
+(
+	Bind
+	[Tail]
+	[list -> {
+			std.Pair.GetRight
+			[list]
+		}
+	]
+)
+(
+	Bind
+	[Append]
+	[list -> {
+			element -> {
+				// element放在左边，列表放右边
+				std.Pair.New
+				[element]
+				[list]
+			}
+		}
+	]
+)

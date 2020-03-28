@@ -16,4 +16,9 @@ public interface CodeLoader {
    * @return 是否存在包
    */
   boolean exists(String packageName);
+
+  /**
+   * 重新加载
+   */
+  void reload();
 }

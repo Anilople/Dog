@@ -100,15 +100,24 @@ public class DogLanguage {
     for (String filePath : filePaths) {
       // 将这些文件作为输入，进行解释
       Path path = Paths.get(filePath);
-      byte[] bytes = Files.readAllBytes(path);
-      final String text = new String(bytes);
-      try {
-        Interpreter.interpret(text);
-        // 可以正常执行，那么就对这个代码文件进行format
-        CodeFormatter.format(path);
-      } catch (Exception e) {
-        throw new RuntimeException(e);
-      }
+      execute(path);
+      // 可以正常执行，那么就对这个代码文件进行format
+      CodeFormatter.format(path);
+    }
+  }
+
+  /**
+   * 只运行一个代码文件
+   * @param path 代码文件
+   * @throws IOException 如果无法读取代码
+   */
+  public static void execute(Path path) throws IOException {
+    byte[] bytes = Files.readAllBytes(path);
+    final String text = new String(bytes);
+    try {
+      Interpreter.interpret(text);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
     }
   }
 
