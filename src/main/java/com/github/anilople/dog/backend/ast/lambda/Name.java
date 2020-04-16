@@ -76,7 +76,14 @@ public class Name extends LambdaExpression {
 
     @Override
     public boolean isSameStructureWithoutReduction(LambdaExpression lambdaExpression) {
-        return lambdaExpression instanceof Name;
+        if(lambdaExpression instanceof Name) {
+            // 类型必须相同
+            Name that = (Name) lambdaExpression;
+            // 字面值也必须相同
+            return this.equals(that);
+        } else {
+            return false;
+        }
     }
 
     @Override
