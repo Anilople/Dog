@@ -7,6 +7,7 @@
 	[std.Pair]
 )
 // 用 Pair 构造 列表
+// 空
 (
 	Bind
 	[Empty]
@@ -15,29 +16,12 @@
 		[True]
 	]
 )
+// 是否为空
 (
 	Bind
 	[IsEmpty]
 	[list -> {
-			std.Pair.GetRight
-			[list]
-		}
-	]
-)
-(
-	Bind
-	[Head]
-	[list -> {
 			std.Pair.GetLeft
-			[list]
-		}
-	]
-)
-(
-	Bind
-	[Tail]
-	[list -> {
-			std.Pair.GetRight
 			[list]
 		}
 	]
@@ -47,11 +31,63 @@
 	[Append]
 	[list -> {
 			element -> {
-				// element放在左边，列表放右边
+				// element放在右边，列表放左边
 				std.Pair.New
-				[element]
 				[list]
+				[element]
 			}
+		}
+	]
+)
+// 用单个元素初始化
+(
+	Bind
+	[Singleton]
+	[element -> {
+			Append
+			[Empty]
+			[element]
+		}
+	]
+)
+// 获取第一个元素
+(
+	Bind
+	[Head]
+	[list -> {
+			std.Pair.GetLeft
+			[list]
+		}
+	]
+)
+// 获取除了第一个元素的剩余部分
+(
+	Bind
+	[Tail]
+	[list -> {
+			std.Pair.GetRight
+			[list]
+		}
+	]
+)
+// 获取长度
+(
+	Bind
+	[Length]
+	[list -> {
+			If
+			[IsEmpty
+				[list]
+			]
+			[0]
+			[+
+				[1]
+				[Length
+					[Tail
+						[list]
+					]
+				]
+			]
 		}
 	]
 )

@@ -7,9 +7,43 @@
 	[empty]
 	[std.List.Empty]
 )
+// 空list判断
 (
-	Print
+	AssertTrue
 	[std.List.IsEmpty
 		[empty]
+	]
+)
+// list的head判断
+(
+	Bind
+	[singleTwo]
+	[std.List.Singleton
+		[2]
+	]
+)
+(
+	Print
+	[std.List.Tail
+		[singleTwo]
+	]
+)
+(
+	Print
+	[std.List.Length
+		[singleTwo]
+	]
+)
+(
+	Bind
+	[DoubleTwo]
+	[std.List.Append
+		[singleTwo]
+	]
+)
+(
+	Print
+	[std.List.Length
+		[DoubleTwo]
 	]
 )
