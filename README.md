@@ -4,7 +4,7 @@
 
 [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/Anilople/Dog)
 
-Dog 编程语言，年轻人的第一门自制编程语言
+Dog 编程语言，通过自制编程语言进行学习。
 
 ## 快速尝试运行
 
