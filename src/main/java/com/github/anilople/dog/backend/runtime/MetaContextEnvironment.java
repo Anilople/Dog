@@ -7,6 +7,7 @@ import com.github.anilople.dog.backend.definition.Booleans;
 import com.github.anilople.dog.backend.definition.Functions;
 import com.github.anilople.dog.backend.definition.branch.Branch;
 import com.github.anilople.dog.backend.definition.operations.Logical;
+import com.github.anilople.dog.backend.runtime.metafunction.assertion.AssertTrue;
 import com.github.anilople.dog.backend.runtime.metafunction.Bind;
 import com.github.anilople.dog.backend.runtime.metafunction.Import;
 import com.github.anilople.dog.backend.runtime.metafunction.IsNullName;
@@ -110,6 +111,9 @@ public class MetaContextEnvironment {
     scopes.put(new VariableName("=="), NumberComparator.Equal.getInstance());
     scopes.put(new VariableName("<"), NumberComparator.Less.getInstance());
     scopes.put(new VariableName(">"), NumberComparator.Great.getInstance());
+
+    // Assert
+    scopes.put(new VariableName(AssertTrue.class.getSimpleName()), AssertTrue.getInstance());
 
     return Collections.unmodifiableMap(scopes);
   }
